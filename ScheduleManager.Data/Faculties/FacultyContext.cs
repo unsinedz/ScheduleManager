@@ -1,19 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ScheduleManager.Data.Generators;
 using ScheduleManager.Domain.Faculties;
+using ScheduleManager.Domain.Scheduling;
 
-namespace ScheduleManager.Data.Schedule
+namespace ScheduleManager.Data.Faculties
 {
-    public class ScheduleContext : DbContext
+    public class FacultyContext : DbContext
     {
-        public ScheduleContext(DbContextOptions<ScheduleContext> options) : base(options)
-        {
-        }
-
         public DbSet<Faculty> Faculties { get; set; }
 
         public DbSet<Department> Departments { get; set; }
+
+        public DbSet<Lecturer> Lecturers { get; set; }
+
+        public FacultyContext(DbContextOptions<FacultyContext> options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,7 +33,10 @@ namespace ScheduleManager.Data.Schedule
                 .HasMaxLength(50);
 
             builder.HasMany(x => x.Departments)
-                .WithOne(x => x.Faculty);
+                .WithOne(x => x.Faculty)
+                .HasForeignKey("FacultyId")
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_Faculty_Department");
         }
 
         protected virtual void BuildDepartment(EntityTypeBuilder<Department> builder)
@@ -42,8 +47,11 @@ namespace ScheduleManager.Data.Schedule
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.HasMany(x => x.Lecturers);
-            builder.HasOne(x => x.Faculty);
+            builder.HasMany(x => x.Lecturers)
+                .WithOne(x => x.Department)
+                .HasForeignKey("DepartmentId")
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_Department_Lecturer");
         }
 
         protected virtual void BuildLecturer(EntityTypeBuilder<Lecturer> builder)

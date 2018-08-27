@@ -5,5 +5,7 @@ namespace ScheduleManager.Domain.Faculties
     public class Lecturer : Entity
     {
         public virtual string Name { get; set; }
+
+        public Department Department { get; set; }
     }
 }

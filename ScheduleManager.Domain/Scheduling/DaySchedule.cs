@@ -6,10 +6,10 @@ namespace ScheduleManager.Domain.Scheduling
 {
     public class DaySchedule : Entity
     {
-        public virtual DateTime DedicatedDate { get; set; }
+        public virtual DateTime? DedicatedDate { get; set; }
 
         public virtual DayOfWeek DayOfWeek { get; set; }
 
-        public virtual IList<Activity> Activities { get; set; }
+        public virtual ActivityCollection Activities { get; set; }
     }
 }

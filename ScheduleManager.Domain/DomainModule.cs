@@ -24,8 +24,8 @@ namespace ScheduleManager.Domain
             services.AddTransient<Lecturer>();
             services.AddTransient<Activity>();
             services.AddTransient<DaySchedule>();
-            services.AddTransient<Schedule>();
             services.AddTransient<WeekSchedule>();
+            services.AddTransient<ScheduleGroup>();
         }
     }
 }

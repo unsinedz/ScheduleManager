@@ -8,6 +8,6 @@ namespace ScheduleManager.Domain.Scheduling
     {
         public virtual int WeekNumber { get; set; }
 
-        public virtual IDictionary<DayOfWeek, DaySchedule> Activities { get; set; }
+        public virtual DayScheduleCollection Days { get; set; }
     }
 }
