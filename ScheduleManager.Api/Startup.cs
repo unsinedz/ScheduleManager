@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ScheduleManager.Data;
 using ScheduleManager.Domain;
 using ScheduleManager.Domain.DependencyInjection;
 
@@ -31,7 +32,16 @@ namespace ScheduleManager.Api
             {
                 options.ForwardClientCertificate = true;
             });
+        }
+
+        private void InitializeModules(IServiceCollection services)
+        {
             new DomainModule().RegisterDependencies(services);
+            new DataModule(new DataModuleOptions
+            {
+                DatabaseConnectionString = Configuration.GetConnectionString("DefaultConnection")
+            })
+            .RegisterDependencies(services);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

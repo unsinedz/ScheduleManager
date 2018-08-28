@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ScheduleManager.Data.Common;
 using ScheduleManager.Data.Entities;
@@ -13,6 +14,13 @@ namespace ScheduleManager.Data
 {
     public class DataModule : IApplicationModule
     {
+        private readonly DataModuleOptions _options;
+
+        public DataModule(DataModuleOptions options)
+        {
+            this._options = options;
+        }
+
         public void RegisterDependencies(IServiceCollection services)
         {
             services.AddEntityFrameworkMySql();
@@ -22,9 +30,9 @@ namespace ScheduleManager.Data
 
         protected virtual void RegisterContexts(IServiceCollection services)
         {
-            services.AddDbContext<CommonContext>();
-            services.AddDbContext<FacultyContext>();
-            services.AddDbContext<ScheduleContext>();
+            services.AddDbContext<CommonContext>(options => options.UseMySql(_options.DatabaseConnectionString));
+            services.AddDbContext<FacultyContext>(options => options.UseMySql(_options.DatabaseConnectionString));
+            services.AddDbContext<ScheduleContext>(options => options.UseMySql(_options.DatabaseConnectionString));
         }
 
         protected virtual void RegisterServices(IServiceCollection services)
