@@ -15,5 +15,6 @@
     <ItemGroup>
         <ProjectReference Include="..\ScheduleManager.Domain\ScheduleManager.Domain.csproj" />
         <ProjectReference Include="..\ScheduleManager.Data\ScheduleManager.Data.csproj" />
+        <ProjectReference Include="..\ScheduleManager.Authentication\ScheduleManager.Authentication.csproj" />
     </ItemGroup>
 </Project>

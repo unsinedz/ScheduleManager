@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ScheduleManager.Authentication;
 using ScheduleManager.Data;
 using ScheduleManager.Domain;
 using ScheduleManager.Domain.DependencyInjection;
@@ -42,6 +43,19 @@ namespace ScheduleManager.Api
                 DatabaseConnectionString = Configuration.GetConnectionString("DefaultConnection")
             })
             .RegisterDependencies(services);
+
+            var authenticationSettings = Configuration.GetSection("Authentication");
+            if (authenticationSettings == null)
+                throw new KeyNotFoundException("Authentication section is not present in configuration file.");
+
+            new AuthenticationModule(new AuthenticationModuleOptions
+            {
+                UseSlidingExpiration = authenticationSettings.GetValue("SlidingExpiration", true),
+                Expiration = TimeSpan.FromMinutes(authenticationSettings.GetValue("TimeoutMinutes", 60)),
+                LoginPath = authenticationSettings.GetValue("LoginPath", "/account/login"),
+                LogoutPath = authenticationSettings.GetValue("LogoutPath", "/account/logout"),
+                AccessDeniedPath = authenticationSettings.GetValue("AccessDeniedPath", "/account/loginrequired")
+            }).RegisterDependencies(services);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
