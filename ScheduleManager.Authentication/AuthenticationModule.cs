@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ScheduleManager.Authentication.Identity;
+using ScheduleManager.Authentication.Storage;
 using ScheduleManager.Domain;
 
 namespace ScheduleManager.Authentication
@@ -16,7 +20,11 @@ namespace ScheduleManager.Authentication
 
         public void RegisterDependencies(IServiceCollection services)
         {
-            services.AddAuthentication().AddCookie(ConfigureAuthentication);
+            services.ConfigureApplicationCookie(ConfigureAuthentication);
+            services.AddDbContext<IdentityContext>(options => options.UseMySql(_options.DatabaseConnectionString));
+            services.AddIdentity<ApplicationUser, UserRole>()
+                .AddEntityFrameworkStores<IdentityContext>()
+                .AddDefaultTokenProviders();
         }
 
         protected virtual void ConfigureAuthentication(CookieAuthenticationOptions options)

@@ -21,10 +21,13 @@ namespace ScheduleManager.Api
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
+            this.DefaultConnectionString = Configuration.GetConnectionString("DefaultConnection");
         }
 
         public IConfiguration Configuration { get; }
+
+        public string DefaultConnectionString { get; private set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -40,22 +43,36 @@ namespace ScheduleManager.Api
             new DomainModule().RegisterDependencies(services);
             new DataModule(new DataModuleOptions
             {
-                DatabaseConnectionString = Configuration.GetConnectionString("DefaultConnection")
+                DatabaseConnectionString = DefaultConnectionString
             })
             .RegisterDependencies(services);
+
+            #region Authentication module
 
             var authenticationSettings = Configuration.GetSection("Authentication");
             if (authenticationSettings == null)
                 throw new KeyNotFoundException("Authentication section is not present in configuration file.");
 
-            new AuthenticationModule(new AuthenticationModuleOptions
+            var cookieSettings = authenticationSettings.GetSection("Cookie");
+            var authenticationModuleOptions = new AuthenticationModuleOptions
             {
+                DatabaseConnectionString = DefaultConnectionString,
                 UseSlidingExpiration = authenticationSettings.GetValue("SlidingExpiration", true),
                 Expiration = TimeSpan.FromMinutes(authenticationSettings.GetValue("TimeoutMinutes", 60)),
                 LoginPath = authenticationSettings.GetValue("LoginPath", "/account/login"),
                 LogoutPath = authenticationSettings.GetValue("LogoutPath", "/account/logout"),
-                AccessDeniedPath = authenticationSettings.GetValue("AccessDeniedPath", "/account/loginrequired")
-            }).RegisterDependencies(services);
+                AccessDeniedPath = authenticationSettings.GetValue("AccessDeniedPath", "/account/loginrequired"),
+                Cookie = new AuthenticationCookieOptions
+                {
+                    IsSecure = cookieSettings?.GetValue("IsSecure", false) ?? false,
+                    Name = cookieSettings?.GetValue("Name", "AuthCookie") ?? "AuthCookie",
+                    Path = cookieSettings?.GetValue("Path", "/") ?? "/",
+                    Expiration = TimeSpan.FromMinutes(cookieSettings?.GetValue("ExpirationMinutes", 60) ?? 60)
+                }
+            };
+            new AuthenticationModule(authenticationModuleOptions).RegisterDependencies(services);
+
+            #endregion
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

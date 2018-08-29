@@ -2,11 +2,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ScheduleManager.Domain\ScheduleManager.Domain.csproj" />
+    <ProjectReference Include="..\ScheduleManager.Data\ScheduleManager.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.3" />
   </ItemGroup>
 
   <PropertyGroup>
