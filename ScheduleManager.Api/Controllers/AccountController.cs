@@ -5,7 +5,8 @@ namespace ScheduleManager.Api.Controllers
 {
     public class AccountController : Controller
     {
-        public IActionResult Register()
+        [HttpGet]
+        public IActionResult Login()
         {
             return View();
         }

@@ -87,7 +87,9 @@ namespace ScheduleManager.Api
             else
                 app.UseHsts();
 
-            app.UseHttpsRedirection();
+            if (Configuration.GetSection("Security")?.GetValue("HttpToHttpsRedirect", false) ?? false)
+                app.UseHttpsRedirection();
+                
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }

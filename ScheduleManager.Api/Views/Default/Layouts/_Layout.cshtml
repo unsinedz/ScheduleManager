@@ -4,17 +4,30 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <environment names="Development">
+        <link rel="stylesheet" href="~/content/css/lib/materialize.css" />
+        <link rel="stylesheet" href="~/content/css/utils.css" />
+    </environment>
+    <environment names="Live">
+        <link rel="stylesheet" href="~/content/css/lib/materialize.min.css" />
+        <link rel="stylesheet" href="~/content/css/utils.min.css" />
+    </environment>
 </head>
 <body>
-    <div class="body-content">
+    <div class="container content">
         @RenderBody()
     </div>
 
     <environment names="Development">
-        <script src="~/content/script/site.js"></script>
+        <script src="~/content/script/lib/jquery-3.3.1.js"></script>
+        <script src="~/content/script/lib/materialize.js"></script>
+        <script src="~/content/script/ui.controls.js"></script>
     </environment>
-    <environment names="Staging,Production">
-        <script src="~/content/script/site.js"></script>
+    <environment names="Live">
+        <script src="~/content/script/lib/jquery-3.3.1.min.js"></script>
+        <script src="~/content/script/lib/materialize.min.js"></script>
+        <script src="~/content/script/ui.controls.min.js"></script>
     </environment>
 
     @RenderSection("scripts", required: false)
