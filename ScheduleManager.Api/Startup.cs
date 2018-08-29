@@ -31,7 +31,11 @@ namespace ScheduleManager.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddRazorOptions(RazorConfiguration.ConfigureRazor)
+                .AddControllersAsServices();
+            
             services.Configure<IISOptions>(options =>
             {
                 options.ForwardClientCertificate = true;
@@ -84,7 +88,8 @@ namespace ScheduleManager.Api
                 app.UseHsts();
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
