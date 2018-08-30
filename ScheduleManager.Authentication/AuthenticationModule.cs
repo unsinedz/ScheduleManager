@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +10,7 @@ using ScheduleManager.Domain;
 
 namespace ScheduleManager.Authentication
 {
-    public class AuthenticationModule : IApplicationModule
+    internal class AuthenticationModule : IApplicationModule
     {
         private readonly AuthenticationModuleOptions _options;
 
@@ -27,7 +28,7 @@ namespace ScheduleManager.Authentication
                 .AddDefaultTokenProviders();
         }
 
-        protected virtual void ConfigureAuthentication(CookieAuthenticationOptions options)
+        private void ConfigureAuthentication(CookieAuthenticationOptions options)
         {
             options.LoginPath = _options.LoginPath;
             options.ExpireTimeSpan = _options.Expiration;
@@ -42,6 +43,20 @@ namespace ScheduleManager.Authentication
             options.Cookie.SecurePolicy = _options.Cookie.IsSecure
                 ? CookieSecurePolicy.Always
                 : CookieSecurePolicy.SameAsRequest;
+        }
+    }
+
+    public static class AuthenticationModuleRegistrationExtensions
+    {
+        public static IServiceCollection AddProjectAuthentication(this IServiceCollection services, Action<AuthenticationModuleOptions> optionsBuilder)
+        {
+            if (optionsBuilder == null)
+                throw new ArgumentNullException(nameof(optionsBuilder));
+
+            var options = new AuthenticationModuleOptions();
+            optionsBuilder(options);
+            new AuthenticationModule(options).RegisterDependencies(services);
+            return services;
         }
     }
 }

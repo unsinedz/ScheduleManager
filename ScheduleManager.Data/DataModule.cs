@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ScheduleManager.Data.Common;
@@ -12,7 +13,7 @@ using ScheduleManager.Domain.Scheduling;
 
 namespace ScheduleManager.Data
 {
-    public class DataModule : IApplicationModule
+    internal class DataModule : IApplicationModule
     {
         private readonly DataModuleOptions _options;
 
@@ -28,14 +29,14 @@ namespace ScheduleManager.Data
             this.RegisterServices(services);
         }
 
-        protected virtual void RegisterContexts(IServiceCollection services)
+        private void RegisterContexts(IServiceCollection services)
         {
             services.AddDbContext<CommonContext>(options => options.UseMySql(_options.DatabaseConnectionString));
             services.AddDbContext<FacultyContext>(options => options.UseMySql(_options.DatabaseConnectionString));
             services.AddDbContext<ScheduleContext>(options => options.UseMySql(_options.DatabaseConnectionString));
         }
 
-        protected virtual void RegisterServices(IServiceCollection services)
+        private void RegisterServices(IServiceCollection services)
         {
             services.AddScoped<IAsyncProvider<Attendee>, CommonProvider<Attendee>>();
             services.AddScoped<IAsyncProvider<Course>, CommonProvider<Course>>();
@@ -51,6 +52,20 @@ namespace ScheduleManager.Data
             services.AddScoped<IAsyncProvider<ScheduleGroup>, ScheduleProvider<ScheduleGroup>>();
             services.AddScoped<IAsyncProvider<DaySchedule>, ScheduleProvider<DaySchedule>>();
             services.AddScoped<IAsyncProvider<WeekSchedule>, ScheduleProvider<WeekSchedule>>();
+        }
+    }
+
+    public static class DataModuleRegistrationExtensions
+    {
+        public static IServiceCollection AddProjectData(this IServiceCollection services, Action<DataModuleOptions> optionsBuilder)
+        {
+            if (optionsBuilder == null)
+                throw new ArgumentNullException(nameof(optionsBuilder));
+
+            var options = new DataModuleOptions();
+            optionsBuilder(options);
+            new DataModule(options).RegisterDependencies(services);
+            return services;
         }
     }
 }

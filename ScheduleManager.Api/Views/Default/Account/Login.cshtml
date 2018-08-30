@@ -1,3 +1,4 @@
+@model LoginViewModel
 @{
     ViewBag.Title = "Login";
 }
@@ -9,12 +10,15 @@
                 <form method="post" action="/account/login" class="form-wrapped">
                     <div class="row">
                         <div class="input-field">
-                            <input placeholder="Username" type="text" name="username" class="validate" />
-                            <label for="username">Username</label>
+                            @Html.TextBoxFor(x => x.UserName, new { placeholder="Username", @class="validate" })
+                            @Html.LabelFor(x => x.UserName)
                         </div>
                         <div class="input-field">
-                            <input placeholder="Password" type="text" name="password" class="validate" />
-                            <label for="password">Password</label>
+                            @Html.TextBoxFor(x => x.Password, new { placeholder="Password", @class="validate" })
+                            @Html.LabelFor(x => x.Password)
+                        </div>
+                        <div class="input-field">
+                            @Html.EditorFor(x => x.RememberMe)
                         </div>
                         <div class="center-align">
                             <button class="btn waves-effect waves-light" type="submit" name="action">Login

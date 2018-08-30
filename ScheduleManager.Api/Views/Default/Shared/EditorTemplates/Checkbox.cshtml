@@ -1,0 +1,10 @@
+@{
+    var metadata = ViewData.ModelMetadata;
+    var name = metadata.DisplayName ?? metadata.Name;
+}
+<p>
+    <label>
+        <input type="checkbox" class="filled-in" checked="checked" />
+        <span>@Strings.Localize(name, name)</span>
+    </label>
+</p>

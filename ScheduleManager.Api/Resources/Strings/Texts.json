@@ -1,0 +1,17 @@
+{
+    "CultureCode": "en",
+    "Localizations": [
+        {
+            "Key": "Login_UserName",
+            "Value": "Username"
+        },
+        {
+            "Key": "Login_Password",
+            "Value": "Password"
+        },
+        {
+            "Key": "Login_RememberMe",
+            "Value": "Remember me"
+        }
+    ]
+}

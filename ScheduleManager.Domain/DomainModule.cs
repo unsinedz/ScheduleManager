@@ -5,14 +5,14 @@ using ScheduleManager.Domain.Scheduling;
 
 namespace ScheduleManager.Domain
 {
-    public class DomainModule : IApplicationModule
+    internal class DomainModule : IApplicationModule
     {
         public void RegisterDependencies(IServiceCollection services)
         {
             this.RegisterEntities(services);
         }
 
-        protected virtual void RegisterEntities(IServiceCollection services)
+        private void RegisterEntities(IServiceCollection services)
         {
             services.AddTransient<Attendee>();
             services.AddTransient<Course>();
@@ -26,6 +26,15 @@ namespace ScheduleManager.Domain
             services.AddTransient<DaySchedule>();
             services.AddTransient<WeekSchedule>();
             services.AddTransient<ScheduleGroup>();
+        }
+    }
+
+    public static class DomainModuleRegistrationExtensions
+    {
+        public static IServiceCollection AddProjectDomain(this IServiceCollection services)
+        {
+            new DomainModule().RegisterDependencies(services);
+            return services;
         }
     }
 }
