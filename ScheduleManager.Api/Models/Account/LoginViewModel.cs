@@ -8,6 +8,7 @@ namespace ScheduleManager.Api.Models.Account
         public string UserName { get; set; }
 
         [Display(Name = "Login_Password")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Display(Name = "Login_RememberMe")]
