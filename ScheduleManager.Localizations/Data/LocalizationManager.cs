@@ -10,13 +10,14 @@ namespace ScheduleManager.Localizations.Data
 {
     public class LocalizationManager<TResourceKey, TResourceValue> : IResourceReader
     {
-        private readonly Dictionary<CultureInfo, ILocalizableResourceProvider<TResourceKey, TResourceValue>> _providers;
-        private readonly CultureInfo _defaultCulture;
+        protected Dictionary<CultureInfo, ILocalizableResourceProvider<TResourceKey, TResourceValue>> Providers { get; set; }
+
+        protected CultureInfo DefaultCulture { get; set; }
 
         public LocalizationManager(CultureInfo defaultCulture = null)
         {
-            _providers = new Dictionary<CultureInfo, ILocalizableResourceProvider<TResourceKey, TResourceValue>>();
-            this._defaultCulture = defaultCulture ?? CultureInfo.InvariantCulture;
+            Providers = new Dictionary<CultureInfo, ILocalizableResourceProvider<TResourceKey, TResourceValue>>();
+            this.DefaultCulture = defaultCulture ?? CultureInfo.InvariantCulture;
         }
 
         public virtual void AddResourceProvider(ILocalizableResourceProvider<TResourceKey, TResourceValue> provider)
@@ -28,10 +29,10 @@ namespace ScheduleManager.Localizations.Data
             if (culture == null)
                 throw new InvalidOperationException("Culture could not be retrieved from provider.");
 
-            if (_providers.ContainsKey(culture))
+            if (Providers.ContainsKey(culture))
                 throw new InvalidOperationException("Provider with this culture was already added.");
 
-            _providers.Add(culture, provider);
+            Providers.Add(culture, provider);
         }
 
         public void Close()
@@ -40,19 +41,19 @@ namespace ScheduleManager.Localizations.Data
 
         public void Dispose()
         {
-            this._providers?.Each(x => x.Value.Dispose());
+            this.Providers?.Each(x => x.Value.Dispose());
         }
 
         public IDictionaryEnumerator GetEnumerator()
         {
-            return GetMatchingProvider(this._defaultCulture).Values
+            return GetMatchingProvider(this.DefaultCulture).Values
                 .ToDictionary(x => x.Key, x => x.Value)
                 .GetEnumerator();
         }
 
         public virtual TResourceValue Localize(TResourceKey key, TResourceValue defaultValue = default(TResourceValue), CultureInfo culture = null)
         {
-            var provider = GetMatchingProvider(culture ?? this._defaultCulture);
+            var provider = GetMatchingProvider(culture ?? this.DefaultCulture);
             var result = provider.Get(key);
             if (IsValueAbsent(result))
                 return defaultValue;
@@ -65,18 +66,18 @@ namespace ScheduleManager.Localizations.Data
             CultureInfo specifiedNeutralCulture = null;
             CultureInfo defaultNeutralCulture = null;
             if (SupportsCulture(culture))
-                return _providers[culture];
+                return Providers[culture];
 
             if (!culture.IsNeutralCulture && SupportsCulture(specifiedNeutralCulture = MakeNeutral(culture)))
-                return _providers[specifiedNeutralCulture];
+                return Providers[specifiedNeutralCulture];
 
-            if (!culture.Equals(this._defaultCulture))
+            if (!culture.Equals(this.DefaultCulture))
             {
-                if (!SupportsCulture(this._defaultCulture))
-                    return _providers[this._defaultCulture];
+                if (!SupportsCulture(this.DefaultCulture))
+                    return Providers[this.DefaultCulture];
 
-                if (!this._defaultCulture.IsNeutralCulture && SupportsCulture(defaultNeutralCulture = MakeNeutral(this._defaultCulture)))
-                    return _providers[this._defaultCulture];
+                if (!this.DefaultCulture.IsNeutralCulture && SupportsCulture(defaultNeutralCulture = MakeNeutral(this.DefaultCulture)))
+                    return Providers[this.DefaultCulture];
             }
 
             throw new ArgumentException($"Provider for the culture \"{culture.LCID}\" does not exist.", nameof(culture));
@@ -87,7 +88,7 @@ namespace ScheduleManager.Localizations.Data
             if (culture == null)
                 throw new ArgumentNullException(nameof(culture));
 
-            return _providers.ContainsKey(culture);
+            return Providers.ContainsKey(culture);
         }
 
         protected virtual CultureInfo MakeNeutral(CultureInfo culture)

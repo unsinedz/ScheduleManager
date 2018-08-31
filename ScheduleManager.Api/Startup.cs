@@ -52,7 +52,12 @@ namespace ScheduleManager.Api
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddRazorOptions(RazorConfiguration.ConfigureRazor)
-                .AddControllersAsServices();
+                .AddControllersAsServices()
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (_, __) =>
+                        TypeResolver.Current.GetService<StringLocalizationManager>();
+                });
 
             this.AddProjectModules(services);
             services.Configure<IISOptions>(options =>
@@ -63,7 +68,8 @@ namespace ScheduleManager.Api
 
         private void AddProjectModules(IServiceCollection services)
         {
-            services.AddProjectDomain()
+            services.AddProjectApi()
+                .AddProjectDomain()
                 .AddProjectData(options =>
                     options.DatabaseConnectionString = DefaultConnectionString)
                 .AddProjectAuthentication(ConfigureAuthentication)

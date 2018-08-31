@@ -38,7 +38,7 @@ namespace ScheduleManager.Localizations.Data
                 throw new System.ArgumentException("Key must not be empty.", nameof(key));
 
             EnsureDescriptorLoaded();
-            return this.Descriptor.Localizations?.Single(x => x.Key.iEquals(key))?.Value;
+            return this.Descriptor.Localizations?.SingleOrDefault(x => x.Key.iEquals(key))?.Value;
         }
 
         public virtual CultureInfo GetCulture()
