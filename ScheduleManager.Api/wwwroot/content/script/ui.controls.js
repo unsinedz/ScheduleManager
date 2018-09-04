@@ -29,4 +29,8 @@
     })();
 
     Align.applyBlockCenterY('.vcenter-y');
+
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+    });
 })(jQuery);

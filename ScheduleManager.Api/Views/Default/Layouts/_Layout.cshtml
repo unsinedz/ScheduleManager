@@ -7,15 +7,18 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <environment names="Development">
         <link rel="stylesheet" href="~/content/css/lib/materialize.css" />
-        <link rel="stylesheet" href="~/content/css/utils.css" />
+        <link rel="stylesheet" href="~/content/css/site.css" />
     </environment>
     <environment names="Live">
         <link rel="stylesheet" href="~/content/css/lib/materialize.min.css" />
-        <link rel="stylesheet" href="~/content/css/utils.min.css" />
+        <link rel="stylesheet" href="~/content/css/site.min.css" />
     </environment>
 </head>
-<body>
-    <div class="container content">
+<body class="grey lighten-4">
+    <header>
+        @await Component.InvokeAsync("Navigation")
+    </header>
+    <div class="content">
         @RenderBody()
     </div>
 

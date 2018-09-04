@@ -59,6 +59,11 @@ namespace ScheduleManager.Api
                 {
                     options.DataAnnotationLocalizerProvider = (_, __) =>
                         TypeResolver.Current.GetService<StringLocalizationManager>();
+                })
+                .AddMvcLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (_, __) =>
+                        TypeResolver.Current.GetService<StringLocalizationManager>();
                 });
 
             this.AddProjectModules(services);
