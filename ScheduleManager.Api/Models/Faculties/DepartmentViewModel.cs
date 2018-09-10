@@ -46,9 +46,14 @@ namespace ScheduleManager.Api.Models.Faculties
             if (!entity.Title.Equals(this.Title) && (updated = true))
                 entity.Title = this.Title;
 
+            if (!entity.Faculty?.Id?.Equals(this.Id))
+
             return updated;
         }
 
-        protected virtual bool TryUpdate
+        protected virtual bool TryUpdateLecturers(Department entity)
+        {
+            throw null;
+        }
     }
 }
