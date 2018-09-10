@@ -1,0 +1,15 @@
+@model SubmitButtonModel
+@{
+    var useCustomIcon = !string.IsNullOrEmpty(Model.MaterialIcon);
+}
+<button class="btn waves-effect waves-light" type="submit" name="action" @Html.RenderAttributes(Model.HtmlAttributes)>
+    @Model.Text
+    @if (useCustomIcon)
+    {
+        <i class="material-icons right">@Model.MaterialIcon</i>
+    }
+    else
+    {
+        <i class="material-icons right">send</i>
+    }
+</button>

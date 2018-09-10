@@ -1,19 +1,19 @@
-<ul class="mainnav sidenav sidenav-fixed static collapsible" id="slide-out">
+<ul class="mainnav sidenav sidenav-fixed collapsible" id="slide-out">
     <li>
         <div class="user-view">
             <div class="background">
-                <img class="responsive-img" src="content/images/zstu_nav_background.jpg">
+                <img class="responsive-img" src="/content/images/zstu_nav_background.jpg">
             </div>
-            <img class="circle" src="content/images/zstu_logo.jpg">
+            <img class="circle" src="/content/images/zstu_logo.jpg">
         </div>
     </li>
     <li>
         <div class="collapsible-header"><i class="material-icons">school</i>@Texts["Faculty"]</div>
         <div class="collapsible-body">
             <ul>
-                <li><a href="#!">@Texts["Faculties"]</a></li>
+                <li><a href="@Url.Action("List", "Faculty")">@Texts["Faculties"]</a></li>
                 <li><a href="#!">@Texts["Lecturers"]</a></li>
-                <li><a href="#!">@Texts["Departments"]</a></li>
+                <li><a href="@Url.Action("List", "Department")">@Texts["Departments"]</a></li>
             </ul>
         </div>
     </li>

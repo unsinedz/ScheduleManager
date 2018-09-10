@@ -32,5 +32,8 @@
 
     $(document).ready(function () {
         $('.collapsible').collapsible();
+        var $fixedNav = $('.sidenav-fixed');
+        if ($fixedNav.length)
+            $('body .content').addClass('content-wrapper');
     });
 })(jQuery);

@@ -5,6 +5,7 @@ using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,11 +47,22 @@ namespace ScheduleManager.Api
 
             app.UseAuthentication();
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseRequestLocalization(options =>
+            {
+                options.SupportedCultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("uk")
+                };
+                options.SupportedUICultures = options.SupportedCultures;
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+            });
+            app.UseMvc(RouteConfig.ConfigureRoutes);
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            this.AddProjectModules(services);
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddRazorOptions(RazorConfiguration.ConfigureRazor)
@@ -66,7 +78,6 @@ namespace ScheduleManager.Api
                         TypeResolver.Current.GetService<StringLocalizationManager>();
                 });
 
-            this.AddProjectModules(services);
             services.Configure<IISOptions>(options =>
             {
                 options.ForwardClientCertificate = true;

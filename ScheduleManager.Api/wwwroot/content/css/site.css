@@ -6,6 +6,18 @@
     min-height: 150px;
 }
 
+.content-wrapper {
+    padding-left: 300px;
+}
+
 .navigation-wrapper {
     background: #ffffffda;
+}
+
+.input-field [class^="field-validation"] {
+    display: none;
+}
+
+h1, h2, h3, h4, h5 {
+    margin-bottom: 30px;
 }

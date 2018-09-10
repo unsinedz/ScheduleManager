@@ -23,14 +23,16 @@
     </div>
 
     <environment names="Development">
-        <script src="~/content/script/lib/jquery-3.3.1.js"></script>
-        <script src="~/content/script/lib/materialize.js"></script>
-        <script src="~/content/script/ui.controls.js"></script>
+        <script defer src="~/content/script/lib/jquery-3.3.1.js"></script>
+        <script defer src="~/content/script/lib/jquery.validate.unobtrusive-3.2.10.min.js"></script>
+        <script defer src="~/content/script/lib/materialize.js"></script>
+        <script defer src="~/content/script/ui.controls.js"></script>
     </environment>
     <environment names="Live">
-        <script src="~/content/script/lib/jquery-3.3.1.min.js"></script>
-        <script src="~/content/script/lib/materialize.min.js"></script>
-        <script src="~/content/script/ui.controls.min.js"></script>
+        <script defer src="~/content/script/lib/jquery-3.3.1.min.js"></script>
+        <script defer src="~/content/script/lib/jquery.validate.unobtrusive-3.2.10.min.js"></script>
+        <script defer src="~/content/script/lib/materialize.min.js"></script>
+        <script defer src="~/content/script/ui.controls.min.js"></script>
     </environment>
 
     @RenderSection("scripts", required: false)

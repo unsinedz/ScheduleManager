@@ -1,0 +1,8 @@
+@model LinkButtonModel
+<a href="@Model.Url" class="btn waves-effect waves-light" @Html.RenderAttributes(Model.HtmlAttributes)>
+    @if (!string.IsNullOrEmpty(Model.MaterialIcon))
+    {
+        <i class="material-icons left">@Model.MaterialIcon</i>
+    }
+    @Model.Text
+</a>

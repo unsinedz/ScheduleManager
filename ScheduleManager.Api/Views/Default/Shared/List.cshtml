@@ -1,0 +1,9 @@
+@model IEnumerable<IPreviewableItemModel>
+<div class="container">
+    <h3>@Texts["List"]</h3>
+    @await Html.LinkButtonAsync(Url.Action("Create"), Texts["List_CreateItem"].Value, "add")
+    @using (Html.BeginForm())
+    {
+        @Html.EditorForModel("PreviewableItems")
+    }
+</div>

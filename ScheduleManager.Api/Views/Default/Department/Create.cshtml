@@ -1,0 +1,10 @@
+<div class="container">
+    <h3>@Texts["Department_Create"]</h3>
+    <div class="form-wrapper">
+        @using (Html.BeginForm())
+        {
+            @Html.EditorForModel()
+            @await Html.SubmitButtonAsync(Texts["Create"].Value)
+        }
+    </div>
+</div>

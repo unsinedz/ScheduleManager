@@ -12,6 +12,34 @@
         {
             "Key": "Login_RememberMe",
             "Value": "Remember me"
+        },
+        {
+            "Key": "Faculty_Title",
+            "Value": "Title"
+        },
+        {
+            "Key": "Department_Title",
+            "Value": "Title"
+        },
+        {
+            "Key": "Errors_Required",
+            "Value": "{0} is mandatory."
+        },
+        {
+            "Key": "Errors_StringLength",
+            "Value": "Use no more than {1} symbols."
+        },
+        {
+            "Key": "List_CreateItem",
+            "Value": "Create"
+        },
+        {
+            "Key": "Submit",
+            "Value": "Submit"
+        },
+        {
+            "Key": "Department_Create",
+            "Value": "New department"
         }
     ]
 }
