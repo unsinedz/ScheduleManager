@@ -8,8 +8,18 @@ namespace ScheduleManager.Api.Controllers
     [Authorize]
     public class FacultyController : ItemsController<Faculty, FacultyViewModel>
     {
-        public FacultyController(IAsyncProvider<Faculty> itemProvider) : base(itemProvider)
+        private readonly IAsyncProvider<Department> _departmentProvider;
+
+        public FacultyController(IAsyncProvider<Faculty> itemProvider, IAsyncProvider<Department> departmentProvider) : base(itemProvider)
         {
+            this._departmentProvider = departmentProvider;
         }
+
+        protected override FacultyViewModel CreateEmptyModel()
+        {
+            return new FacultyViewModel(_departmentProvider);
+        }
+
+        protected override string GetListTitle() => "Faculties";
     }
 }

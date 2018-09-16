@@ -1,15 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ScheduleManager.Api.Models;
+using ScheduleManager.Api.Models.Editors;
+using ScheduleManager.Domain.DependencyInjection;
 using ScheduleManager.Domain.Entities;
 
 namespace ScheduleManager.Api.Controllers
 {
     public class ItemsController<TItem, TItemViewModel> : Controller
         where TItem : Entity, new()
-        where TItemViewModel : ItemViewModel<TItem>, new()
+        where TItemViewModel : ItemViewModel<TItem>
     {
         protected IAsyncProvider<TItem> ItemProvider { get; set; }
 
@@ -21,19 +24,27 @@ namespace ScheduleManager.Api.Controllers
         [HttpGet]
         public virtual async Task<IActionResult> List()
         {
-            var items = await ItemProvider.ListAsync();
-            return View(items.Select(CreateItemViewModel));
+            var items = (await ItemProvider.ListAsync()).Select(CreateItemViewModel);
+            object model = items.Any(x => x.PreviewableInList)
+                ? CreateListModel(items.OfType<IPreviewableItemModel>())
+                : (object)items;
+            return View(model);
         }
 
         [HttpGet]
-        public virtual IActionResult Create()
+        [ActionName("Create")]
+        public virtual IActionResult CreateGet()
         {
-            return View(new TItemViewModel());
+            var model = CreateEmptyModel();
+            return View(model);
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> Create(TItemViewModel model)
+        [ActionName("Create")]
+        public virtual async Task<IActionResult> CreatePost()
         {
+            var model = CreateEmptyModel();
+            await TryUpdateModelAsync(model);
             if (!ModelState.IsValid)
                 return View(model: model);
 
@@ -53,7 +64,8 @@ namespace ScheduleManager.Api.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> Edit(Guid id)
+        [ActionName("Edit")]
+        public virtual async Task<IActionResult> EditGet(Guid id)
         {
             if (id == Guid.Empty)
                 return NotFound();
@@ -62,14 +74,17 @@ namespace ScheduleManager.Api.Controllers
             if (item == null)
                 return NotFound();
 
-            var model = new TItemViewModel();
+            var model = CreateEmptyModel();
             model.Initialize(item);
             return View(model: model);
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> Edit(TItemViewModel model, Guid id)
+        [ActionName("Edit")]
+        public virtual async Task<IActionResult> EditPost(Guid id)
         {
+            var model = CreateEmptyModel();
+            await TryUpdateModelAsync(model);
             if (!ModelState.IsValid || id == Guid.Empty)
                 return View(model: model);
 
@@ -100,18 +115,36 @@ namespace ScheduleManager.Api.Controllers
 
         protected virtual async Task<bool> TrySaveItemAsync(TItem item, TItemViewModel model)
         {
-            var updated = model.TryUpdateEntity(item);
+            var updated = await model.TryUpdateEntityProperties(item);
             if (updated)
                 await ItemProvider.CreateAsync(item);
 
             return updated;
         }
 
+        protected virtual TItemViewModel CreateEmptyModel()
+        {
+            return TypeResolver.Resolve<TItemViewModel>();
+        }
+
         protected virtual TItemViewModel CreateItemViewModel(TItem item)
         {
-            var model = new TItemViewModel();
+            var model = CreateEmptyModel();
             model.Initialize(item);
             return model;
         }
+
+        protected virtual PreviewableItemsViewModel CreateListModel(IEnumerable<IPreviewableItemModel> previewableItems)
+        {
+            return new PreviewableItemsViewModel
+            {
+                Title = GetListTitle(),
+                PreviewableItems = previewableItems,
+                EditUrl = new Func<object, string>(routeData => Url.Action("Edit", this.ControllerContext.ActionDescriptor.ControllerName, routeData)),
+                DeleteUrl = new Func<object, string>(routeData => Url.Action("Delete", this.ControllerContext.ActionDescriptor.ControllerName, routeData)),
+            };
+        }
+
+        protected virtual string GetListTitle() => "Items";
     }
 }

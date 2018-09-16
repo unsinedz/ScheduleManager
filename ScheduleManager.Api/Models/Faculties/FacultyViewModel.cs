@@ -6,13 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using ScheduleManager.Domain.Faculties;
 using ScheduleManager.Domain.Extensions;
 using System;
+using ScheduleManager.Domain.Entities;
 
 namespace ScheduleManager.Api.Models.Faculties
 {
     public class FacultyViewModel : ItemViewModel<Faculty>, IPreviewableItemModel
     {
+        private readonly IAsyncProvider<Department> _departmentProvider;
+
         [HiddenInput(DisplayValue = false)]
         public Guid Id { get; set; }
+
+        string IPreviewableItemModel.Id => this.Id.ToString();
 
         [Display(Name = "Faculty_Title")]
         [Required(ErrorMessage = "Errors_Required")]
@@ -26,6 +31,11 @@ namespace ScheduleManager.Api.Models.Faculties
 
         public override bool Removable => true;
 
+        public FacultyViewModel(IAsyncProvider<Department> departmentProvider)
+        {
+            this._departmentProvider = departmentProvider;
+        }
+
         public IEnumerable<ItemFieldInfo> GetItemFields()
         {
             yield return new ItemFieldInfo(nameof(Title), this.Title);
@@ -38,39 +48,36 @@ namespace ScheduleManager.Api.Models.Faculties
             this.Departments = new List<Department>(entity.Departments);
         }
 
-        public override bool TryUpdateEntity(Faculty entity)
+        public override async Task<bool> TryUpdateEntityProperties(Faculty entity)
         {
             bool updated = false;
-            if (!entity.Title.Equals(this.Title) && (updated = true))
+            if (!string.Equals(entity.Title, this.Title) && (updated = true))
                 entity.Title = this.Title;
 
-            updated &= TryUpdateDepartments(entity);
+            updated |= await TryUpdateDepartments(entity);
             return updated;
         }
 
-        protected virtual bool TryUpdateDepartments(Faculty entity)
+        protected virtual async Task<bool> TryUpdateDepartments(Faculty entity)
         {
-            if (object.ReferenceEquals(this.Departments, entity.Departments))
-                return false;
-
-            if (entity.Departments.IsNullOrEmpty() && this.Departments.IsNullOrEmpty())
-                return false;
-
-            if (entity.Departments == null)
-                entity.Departments = new List<Department>();
-
-            if (this.Departments == null)
-                this.Departments = new List<Department>();
-
-            var collectionsDiffer = !this.Departments.IsSimilarAs(entity.Departments);
-            if (collectionsDiffer)
+            var entityCollection = entity.Departments;
+            var modelCollection = this.Departments;
+            if (TryUpdateEntityCollection<Department, IList<Department>>(ref entityCollection, ref modelCollection, () => new List<Department>())
+                && !(entityCollection.Count == 0 && entity.Departments == null))
             {
-                entity.Departments.Clear();
-                foreach (var department in this.Departments)
-                    entity.Departments.Add(department);
+                var preparedCollection = await Task.WhenAll(entityCollection.Select(x => _departmentProvider.GetByIdAsync(x.Id)));
+                if (entity.Departments == null)
+                    entity.Departments = preparedCollection;
+                else
+                {
+                    entity.Departments.Clear();
+                    entity.Departments.AddRange(preparedCollection);
+                }
+
+                return true;
             }
 
-            return collectionsDiffer;
+            return false;
         }
     }
 }

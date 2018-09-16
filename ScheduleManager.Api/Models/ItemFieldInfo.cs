@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+
 namespace ScheduleManager.Api.Models
 {
     public class ItemFieldInfo

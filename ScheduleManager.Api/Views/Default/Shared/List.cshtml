@@ -1,6 +1,6 @@
-@model IEnumerable<IPreviewableItemModel>
+@model PreviewableItemsViewModel
 <div class="container">
-    <h3>@Texts["List"]</h3>
+    <h3>@Texts[$"List_{Model.Title}"]</h3>
     @await Html.LinkButtonAsync(Url.Action("Create"), Texts["List_CreateItem"].Value, "add")
     @using (Html.BeginForm())
     {

@@ -48,5 +48,14 @@ namespace ScheduleManager.Domain.Extensions
 
             return true;
         }
+
+        public static void AddRange<T>(this ICollection<T> source, IEnumerable<T> second)
+        {
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
+
+            foreach (var item in second)
+                source.Add(item);
+        }
     }
 }

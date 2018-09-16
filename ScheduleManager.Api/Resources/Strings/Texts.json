@@ -2,6 +2,14 @@
     "CultureCode": "en",
     "Localizations": [
         {
+            "Key": "Edit",
+            "Value": "Edit"
+        },
+        {
+            "Key": "Delete",
+            "Value": "Delete"
+        },
+        {
             "Key": "Login_UserName",
             "Value": "Username"
         },
@@ -40,6 +48,34 @@
         {
             "Key": "Department_Create",
             "Value": "New department"
+        },
+        {
+            "Key": "EntityField_Title",
+            "Value": "Title"
+        },
+        {
+            "Key": "DailySchedule",
+            "Value": "Daily schedule"
+        },
+        {
+            "Key": "WeekSchedule",
+            "Value": "Week schedule"
+        },
+        {
+            "Key": "ScheduleGroup",
+            "Value": "Schedule group"
+        },
+        {
+            "Key": "List_Items",
+            "Value": "Items"
+        },
+        {
+            "Key": "List_Faculties",
+            "Value": "Faculties"
+        },
+        {
+            "Key": "List_Departments",
+            "Value": "Departments"
         }
     ]
 }

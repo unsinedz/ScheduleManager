@@ -1,5 +1,62 @@
-@model IEnumerable<IPreviewableItemModel>
-@if (Model.IsNullOrEmpty())
+@model PreviewableItemsViewModel
+@if ((Model?.PreviewableItems).IsNullOrEmpty())
 {
     <p>No items</p>
+}
+else
+{
+    var renderCommandColumn = Model.PreviewableItems.Any(x => x.Editable || x.Removable);
+    var fieldsToDisplay = Model.PreviewableItems.SelectMany(x => x.GetItemFields()).Select(x => x.FieldName).Distinct().ToList();
+    if (fieldsToDisplay.Count > 0)
+    {
+        <table>
+            <thead>
+                <tr>
+                    @foreach (var fieldName in fieldsToDisplay)
+                    {
+                        <th>@Texts[$"EntityField_{fieldName}"]</th>
+                    }
+                    @if (renderCommandColumn)
+                    {
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PreviewableItems)
+                {
+                    var itemFields = item.GetItemFields().OrderBy(x => fieldsToDisplay.IndexOf(x.FieldName));
+                    if (itemFields.Any())
+                    {
+                        <tr>
+                            @foreach (var itemField in itemFields)
+                            {
+                                <td>@itemField.FieldValue</td>
+                            }
+                            @if (renderCommandColumn)
+                            {
+                                if (item.Editable || item.Removable)
+                                {
+                                    <td>
+                                        @if (item.Editable)
+                                        {
+                                            @await Html.LinkButtonAsync(Model.EditUrl(new { id = item.Id }), Texts["Edit"].Value)
+                                        }
+                                        @if (item.Removable)
+                                        {
+                                            @await Html.LinkButtonAsync(Model.DeleteUrl(new { id = item.Id }), Texts["Delete"].Value)
+                                        }
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
 }
