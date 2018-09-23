@@ -31,7 +31,9 @@
     Align.applyBlockCenterY('.vcenter-y');
 
     $(document).ready(function () {
+        Navigation && Navigation.init();
         $('.collapsible').collapsible();
+        Navigation && Navigation.unfoldActiveItem();
         var $fixedNav = $('.sidenav-fixed');
         if ($fixedNav.length)
             $('body .content').addClass('content-wrapper');
