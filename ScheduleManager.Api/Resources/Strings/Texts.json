@@ -2,34 +2,6 @@
     "CultureCode": "en",
     "Localizations": [
         {
-            "Key": "Edit",
-            "Value": "Edit"
-        },
-        {
-            "Key": "Delete",
-            "Value": "Delete"
-        },
-        {
-            "Key": "Login_UserName",
-            "Value": "Username"
-        },
-        {
-            "Key": "Login_Password",
-            "Value": "Password"
-        },
-        {
-            "Key": "Login_RememberMe",
-            "Value": "Remember me"
-        },
-        {
-            "Key": "Faculty_Title",
-            "Value": "Title"
-        },
-        {
-            "Key": "Department_Title",
-            "Value": "Title"
-        },
-        {
             "Key": "Errors_Required",
             "Value": "{0} is mandatory."
         },
@@ -38,20 +10,20 @@
             "Value": "Use no more than {1} symbols."
         },
         {
-            "Key": "List_CreateItem",
-            "Value": "Create"
+            "Key": "Edit",
+            "Value": "Edit"
+        },
+        {
+            "Key": "Delete",
+            "Value": "Delete"
         },
         {
             "Key": "Submit",
             "Value": "Submit"
         },
         {
-            "Key": "Department_Create",
-            "Value": "New department"
-        },
-        {
-            "Key": "EntityField_Title",
-            "Value": "Title"
+            "Key": "Save",
+            "Value": "Save"
         },
         {
             "Key": "DailySchedule",
@@ -66,6 +38,22 @@
             "Value": "Schedule group"
         },
         {
+            "Key": "Login_UserName",
+            "Value": "Username"
+        },
+        {
+            "Key": "Login_Password",
+            "Value": "Password"
+        },
+        {
+            "Key": "Login_RememberMe",
+            "Value": "Remember me"
+        },
+        {
+            "Key": "List_CreateItem",
+            "Value": "Create"
+        },
+        {
             "Key": "List_Items",
             "Value": "Items"
         },
@@ -76,6 +64,26 @@
         {
             "Key": "List_Departments",
             "Value": "Departments"
+        },
+        {
+            "Key": "Faculty_Title",
+            "Value": "Title"
+        },
+        {
+            "Key": "Department_Title",
+            "Value": "Title"
+        },
+        {
+            "Key": "Department_Create",
+            "Value": "New department"
+        },
+        {
+            "Key": "Department_Edit",
+            "Value": "Edit department"
+        },
+        {
+            "Key": "EntityField_Title",
+            "Value": "Title"
         }
     ]
 }

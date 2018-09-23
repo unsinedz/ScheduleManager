@@ -1,10 +1,21 @@
+@{ 
+    string titleKey;
+    if (ViewData.ModelMetadata.AdditionalValues.TryGetValue(Constants.Keys.CreatePageTitle, out var title) && title is string key)
+    {
+        titleKey = key;
+    }
+    else
+    {
+        titleKey = "Create";
+    }
+}
 <div class="container">
-    <h3>@Texts["Create"]</h3>
+    <h3>@Texts[titleKey]</h3>
     <div class="form-wrapper">
         @using (Html.BeginForm())
         {
             @Html.EditorForModel()
-            @await Html.SubmitButtonAsync(Texts["Create"].Value)
+            @await Html.SubmitButtonAsync(Texts["Save"].Value)
         }
     </div>
 </div>

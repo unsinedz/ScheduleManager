@@ -8,9 +8,11 @@ using ScheduleManager.Data.Faculties;
 using ScheduleManager.Domain.Entities;
 using ScheduleManager.Domain.Faculties;
 using ScheduleManager.Domain.Extensions;
+using ScheduleManager.Api.Metadata.Attributes;
 
 namespace ScheduleManager.Api.Models.Faculties
 {
+    [PageTitles(createPageTitleKey: "Department_Create", editPageTitleKey: "Department_Edit")]
     public class DepartmentViewModel : ItemViewModel<Department>, IPreviewableItemModel
     {
         private readonly IAsyncProvider<Faculty> _facultyProvider;

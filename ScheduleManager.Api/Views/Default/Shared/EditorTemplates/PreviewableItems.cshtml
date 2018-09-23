@@ -9,7 +9,7 @@ else
     var fieldsToDisplay = Model.PreviewableItems.SelectMany(x => x.GetItemFields()).Select(x => x.FieldName).Distinct().ToList();
     if (fieldsToDisplay.Count > 0)
     {
-        <table>
+        <table class="highlight responsive-table">
             <thead>
                 <tr>
                     @foreach (var fieldName in fieldsToDisplay)
@@ -37,14 +37,14 @@ else
                             {
                                 if (item.Editable || item.Removable)
                                 {
-                                    <td>
+                                    <td class="right-align">
                                         @if (item.Editable)
                                         {
-                                            @await Html.LinkButtonAsync(Model.EditUrl(new { id = item.Id }), Texts["Edit"].Value)
+                                            @await Html.LinkButtonAsync(Model.EditUrl(new { id = item.Id }), Texts["Edit"].Value, htmlAttributes: new { @class = "btn-small" })
                                         }
                                         @if (item.Removable)
                                         {
-                                            @await Html.LinkButtonAsync(Model.DeleteUrl(new { id = item.Id }), Texts["Delete"].Value)
+                                            @await Html.LinkButtonAsync("javascript:void(0)", Texts["Delete"].Value, htmlAttributes: new { @class = "btn-small", data_post_url = Model.DeleteUrl(new { id = item.Id }) })
                                         }
                                     </td>
                                 }

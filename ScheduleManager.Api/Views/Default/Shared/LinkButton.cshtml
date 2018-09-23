@@ -1,5 +1,18 @@
 @model LinkButtonModel
-<a href="@Model.Url" class="btn waves-effect waves-light" @Html.RenderAttributes(Model.HtmlAttributes)>
+@{
+    var buttonClass = "btn waves-effect waves-light";
+    var attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(Model.HtmlAttributes ?? new object());
+    if (attributes.ContainsKey("class") && attributes["class"] is string passedClass)
+    {
+        if (!string.IsNullOrWhiteSpace(passedClass))
+        {
+            buttonClass += $" {passedClass.Trim()}";
+        }
+
+        attributes.Remove("class");
+    }
+}
+<a href="@Model.Url" class="@buttonClass" @Html.RenderAttributes(Model.HtmlAttributes)>
     @if (!string.IsNullOrEmpty(Model.MaterialIcon))
     {
         <i class="material-icons left">@Model.MaterialIcon</i>

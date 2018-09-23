@@ -19,6 +19,7 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="jQuery.Validation" Version="1.17.0" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetcore.Mvc" Version="2.1.2" />
         <PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.1.2" />

@@ -24,8 +24,8 @@ namespace ScheduleManager.Api.Controllers
         [HttpGet]
         public virtual async Task<IActionResult> List()
         {
-            var items = (await ItemProvider.ListAsync()).Select(CreateItemViewModel);
-            object model = items.Any(x => x.PreviewableInList)
+            var items = OrderListItems(await ItemProvider.ListAsync()).Select(CreateItemViewModel);
+            object model = !items.Any() || items.Any(x => x.PreviewableInList)
                 ? CreateListModel(items.OfType<IPreviewableItemModel>())
                 : (object)items;
             return View(model);
@@ -49,7 +49,6 @@ namespace ScheduleManager.Api.Controllers
                 return View(model: model);
 
             var item = new TItem();
-            this.OnBeforeCreate(item, model);
             if (await TrySaveItemAsync(new TItem(), model))
                 return RedirectToAction(nameof(List));
 
@@ -59,8 +58,7 @@ namespace ScheduleManager.Api.Controllers
 
         protected virtual void OnBeforeCreate(TItem item, TItemViewModel model)
         {
-            if (item.Id == Guid.Empty)
-                item.Id = Guid.NewGuid();
+            item.Id = Guid.NewGuid();
         }
 
         [HttpGet]
@@ -103,21 +101,35 @@ namespace ScheduleManager.Api.Controllers
         public virtual async Task<IActionResult> Delete(Guid id)
         {
             if (id == Guid.Empty)
-                return Json(1);
+                return BadRequest();
 
             var item = await ItemProvider.GetByIdAsync(id);
             if (item == null)
-                return Json(1);
+                return NotFound();
 
             await ItemProvider.RemoveAsync(item);
-            return Json(0);
+            return Ok();
+        }
+
+        protected virtual IEnumerable<TItem> OrderListItems(IEnumerable<TItem> items)
+        {
+            return items;
         }
 
         protected virtual async Task<bool> TrySaveItemAsync(TItem item, TItemViewModel model)
         {
+            var create = item.Id == Guid.Empty;
+            if (create)
+                this.OnBeforeCreate(item, model);
+
             var updated = await model.TryUpdateEntityProperties(item);
             if (updated)
-                await ItemProvider.CreateAsync(item);
+            {
+                var action = create
+                    ? ItemProvider.CreateAsync(item)
+                    : ItemProvider.UpdateAsync(item);
+                await action;
+            }
 
             return updated;
         }

@@ -78,6 +78,7 @@ namespace ScheduleManager.Api
                         TypeResolver.Current.GetService<StringLocalizationManager>();
                 });
 
+            services.ConfigureMvc();     
             services.Configure<IISOptions>(options =>
             {
                 options.ForwardClientCertificate = true;
