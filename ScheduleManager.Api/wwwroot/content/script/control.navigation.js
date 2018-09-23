@@ -7,6 +7,9 @@ var Navigation = (function ($) {
     }
 
     function openNavigationWithActiveItem($nav, groupSelector, $item) {
+        if (!$item.length)
+            return;
+            
         var $itemGroup = $item.closest(groupSelector);
         M.Collapsible.getInstance($nav).open($nav.find(groupSelector).index($itemGroup));
     }

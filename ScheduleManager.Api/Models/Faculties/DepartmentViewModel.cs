@@ -55,7 +55,7 @@ namespace ScheduleManager.Api.Models.Faculties
             this.Id = entity.Id;
             this.Title = entity.Title;
             this.Faculty = entity.Faculty;
-            this.Lecturers = entity.Lecturers;
+            this.Lecturers = new List<Lecturer>(entity.Lecturers ?? Enumerable.Empty<Lecturer>());
         }
 
         public override async Task<bool> TryUpdateEntityProperties(Department entity)
