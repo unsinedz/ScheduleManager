@@ -3,11 +3,15 @@
     "Localizations": [
         {
             "Key": "Errors_Required",
-            "Value": "{0} is mandatory."
+            "Value": "{0} is mandatory"
+        },
+        {
+            "Key": "Errors_RelatedEntity_Required",
+            "Value": "{0} must be selected"
         },
         {
             "Key": "Errors_StringLength",
-            "Value": "Use no more than {1} symbols."
+            "Value": "Use no more than {1} symbols"
         },
         {
             "Key": "Edit",

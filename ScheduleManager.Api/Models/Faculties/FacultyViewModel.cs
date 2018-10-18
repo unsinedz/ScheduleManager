@@ -7,6 +7,7 @@ using ScheduleManager.Domain.Faculties;
 using ScheduleManager.Domain.Extensions;
 using System;
 using ScheduleManager.Domain.Entities;
+using ScheduleManager.Api.Metadata.Attributes;
 
 namespace ScheduleManager.Api.Models.Faculties
 {
@@ -23,8 +24,7 @@ namespace ScheduleManager.Api.Models.Faculties
         [Required(ErrorMessage = "Errors_Required")]
         public virtual string Title { get; set; }
 
-        [UIHint("DragNDrop")]
-        [ScaffoldColumn(false)]
+        [RelatedApiEntitySelector("Api_Department_List", ApiVersion = "V1", SelectMultiple = true)]
         public virtual IList<Department> Departments { get; set; }
 
         public override bool Editable => true;

@@ -9,6 +9,7 @@ using ScheduleManager.Domain.Entities;
 using ScheduleManager.Domain.Faculties;
 using ScheduleManager.Domain.Extensions;
 using ScheduleManager.Api.Metadata.Attributes;
+using ScheduleManager.Api.Metadata;
 
 namespace ScheduleManager.Api.Models.Faculties
 {
@@ -28,11 +29,11 @@ namespace ScheduleManager.Api.Models.Faculties
         [StringLength(50, ErrorMessage = "Errors_StringLength")]
         public virtual string Title { get; set; }
 
-        [UIHint("DragNDrop")]
-        [ScaffoldColumn(false)]
+        [RelatedApiEntitySelector("Api_Lecturer_List", ApiVersion = "V1", SelectMultiple = true)]
         public virtual IList<Lecturer> Lecturers { get; set; }
 
-        [ScaffoldColumn(false)]
+        [RelatedApiEntitySelector("Api_Faculty_List", ApiVersion = "V1", EntityType = Constants.EntityType.Faculty,
+            Required = true, ErrorMessage = "Errors_RelatedEntity_Required")]
         public virtual Faculty Faculty { get; set; }
 
         public override bool Editable => true;
@@ -66,13 +67,11 @@ namespace ScheduleManager.Api.Models.Faculties
 
             var entityHasFaculty = entity.Faculty != null;
             var modelHasFaculty = this.Faculty != null;
-            var facultyIdsDifferent = entityHasFaculty && modelHasFaculty && !entity.Faculty.Id.Equals(this.Faculty.Id);
-            if ((facultyIdsDifferent || (!entityHasFaculty && modelHasFaculty)) && (updated = true))
+            var facultyIdsDiffer = (entityHasFaculty ^ modelHasFaculty) || !object.Equals(entity.Faculty?.Id, this.Faculty?.Id);
+            if (facultyIdsDiffer && (updated = true))
                 entity.Faculty = await _facultyProvider.GetByIdAsync(this.Faculty.Id);
-            else if (!modelHasFaculty && (updated = true))
-                entity.Faculty = null;
 
-            updated |= await TryUpdateLecturers(entity);
+            updated = updated | await TryUpdateLecturers(entity);
             return updated;
         }
 

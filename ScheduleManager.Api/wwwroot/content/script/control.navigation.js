@@ -1,4 +1,5 @@
-var Navigation = (function ($) {
+var Framework = Framework || {};
+Framework.Navigation = (function ($) {
     function activateMatchingNavigation(selector, isActiveFunction) {
         if (!selector)
             return;
@@ -9,7 +10,7 @@ var Navigation = (function ($) {
     function openNavigationWithActiveItem($nav, groupSelector, $item) {
         if (!$item.length)
             return;
-            
+
         var $itemGroup = $item.closest(groupSelector);
         M.Collapsible.getInstance($nav).open($nav.find(groupSelector).index($itemGroup));
     }
@@ -27,7 +28,7 @@ var Navigation = (function ($) {
                 paramStartIndex = href.length;
 
             var preparedHref = href.substring(0, paramStartIndex).trim('/').toLowerCase();
-            return preparedUrl === preparedHref;
+            return preparedUrl.startsWith(preparedHref);
         });
     };
 

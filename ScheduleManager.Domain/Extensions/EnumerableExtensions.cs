@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace ScheduleManager.Domain.Extensions
 {
@@ -56,6 +57,30 @@ namespace ScheduleManager.Domain.Extensions
 
             foreach (var item in second)
                 source.Add(item);
+        }
+
+        public static IQueryable<T> FilterIf<T>(this IQueryable<T> source, bool condition, Expression<Func<T, bool>> predicate)
+        {
+            if (condition)
+                return source.Where(predicate);
+
+            return source;
+        }
+
+        public static IQueryable<T> TakeIf<T>(this IQueryable<T> source, bool condition, int count)
+        {
+            if (condition)
+                return source.Take(count);
+
+            return source;
+        }
+
+        public static IQueryable<T> SkipIf<T>(this IQueryable<T> source, bool condition, int count)
+        {
+            if (condition)
+                return source.Skip(count);
+
+            return source;
         }
     }
 }

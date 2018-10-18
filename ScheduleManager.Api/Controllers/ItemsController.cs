@@ -56,11 +56,6 @@ namespace ScheduleManager.Api.Controllers
             return View(model: model);
         }
 
-        protected virtual void OnBeforeCreate(TItem item, TItemViewModel model)
-        {
-            item.Id = Guid.NewGuid();
-        }
-
         [HttpGet]
         [ActionName("Edit")]
         public virtual async Task<IActionResult> EditGet(Guid id)
@@ -116,11 +111,10 @@ namespace ScheduleManager.Api.Controllers
             return items;
         }
 
-        protected virtual async Task<bool> TrySaveItemAsync(TItem item, TItemViewModel model)
+        protected virtual async Task<bool> TrySaveItemAsync(TItem item, TItemViewModel model, bool create = false)
         {
-            var create = item.Id == Guid.Empty;
             if (create)
-                this.OnBeforeCreate(item, model);
+                item.Id = Guid.NewGuid();
 
             var updated = await model.TryUpdateEntityProperties(item);
             if (updated)

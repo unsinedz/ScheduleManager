@@ -27,18 +27,16 @@
         <script src="~/content/script/lib/jquery.validate-1.17.0.min.js"></script>
         <script src="~/content/script/lib/jquery.validate.unobtrusive-3.2.10.min.js"></script>
         <script src="~/content/script/lib/materialize.js"></script>
+        <script src="~/content/script/framework.utils.js"></script>
+        <script src="~/content/script/framework.validation.js"></script>
         <script src="~/content/script/control.navigation.js"></script>
+        <script src="~/content/script/control.autocomplete.js"></script>
+        <script src="~/content/script/control.autocomplete.mappers.js"></script>
         <script src="~/content/script/control.urls.js"></script>
         <script src="~/content/script/controls.ui.js"></script>
     </environment>
     <environment names="Production">
-        <script src="~/content/script/lib/jquery-3.3.1.min.js"></script>
-        <script src="~/content/script/lib/jquery.validate-1.17.0.min.js"></script>
-        <script src="~/content/script/lib/jquery.validate.unobtrusive-3.2.10.min.js"></script>
-        <script src="~/content/script/lib/materialize.min.js"></script>
-        <script src="~/content/script/controls.navigation.min.js"></script>
-        <script src="~/content/script/control.urls.min.js"></script>
-        <script src="~/content/script/controls.ui.min.js"></script>
+        <script src="~/content/script/default.min.js"></script>
     </environment>
 
     @RenderSection("scripts", required: false)

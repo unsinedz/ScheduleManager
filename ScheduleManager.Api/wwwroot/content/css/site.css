@@ -14,10 +14,26 @@
     background: #ffffffda;
 }
 
-.input-field [class^="field-validation"] {
-    display: none;
-}
-
 h1, h2, h3, h4, h5 {
     margin-bottom: 30px;
+}
+
+.input-field input.input-validation-error:not(.browser-default),
+.input-field input.input-validation-error:not(.browser-default):focus {
+    border-bottom: 1px solid #F44336;
+    -webkit-box-shadow: 0 1px 0 0 #F44336;
+    box-shadow: 0 1px 0 0 #F44336;
+}
+
+.input-field {
+    margin-top: 1.6rem;
+}
+
+.material-icons .preloader-icon {
+    width: 2rem;
+    height: 2rem;
+}
+
+.field-validation-error span {
+    color: #F44336;
 }

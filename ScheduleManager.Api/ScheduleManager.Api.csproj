@@ -28,6 +28,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\ScheduleManager.Domain\ScheduleManager.Domain.csproj" />

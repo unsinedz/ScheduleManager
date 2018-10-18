@@ -30,12 +30,17 @@
 
     Align.applyBlockCenterY('.vcenter-y');
 
-    $(document).ready(function () {
-        Navigation && Navigation.init();
-        $('.collapsible').collapsible();
-        Navigation && Navigation.unfoldActiveItem();
-        var $fixedNav = $('.sidenav-fixed');
-        if ($fixedNav.length)
-            $('body .content').addClass('content-wrapper');
+    $.validator.setDefaults({
     });
+
+    if (Framework && Framework.Navigation) {
+        $(document).ready(function () {
+            Framework.Navigation.init();
+            $('.collapsible').collapsible();
+            Framework.Navigation.unfoldActiveItem();
+            var $fixedNav = $('.sidenav-fixed');
+            if ($fixedNav.length)
+                $('body .content').addClass('content-wrapper');
+        });
+    }
 })(jQuery);

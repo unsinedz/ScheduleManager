@@ -7,10 +7,19 @@ namespace ScheduleManager.Api
     {
         public static void ConfigureRoutes(IRouteBuilder builder)
         {
-            builder.AddControllerRoute("Account", "account/{action}", "Login");
             builder.AddControllerRoute("Home", "{action}", "Index");
+            builder.AddControllerRoute("Account", "account/{action}", "Login");
             builder.AddControllerRoute("Faculty", "faculties/{action}", "List");
             builder.AddControllerRoute("Department", "departments/{action}", "List");
+            ConfigureApiV1Routes(builder);
+        }
+
+        private static void ConfigureApiV1Routes(IRouteBuilder builder)
+        {
+            var apiVersion = "V1";
+            builder.AddApiRoutes("Department", $"api/{apiVersion}/departments", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("Faculty", $"api/{apiVersion}/faculties", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("Lecturer", $"api/{apiVersion}/lecturers", apiVersion, hasList: true, hasSingle: true);
         }
 
         public static void AddControllerRoute(this IRouteBuilder builder, string controllerName, string url, string defaultActionName)
@@ -48,6 +57,35 @@ namespace ScheduleManager.Api
                 action = defaultActionName,
                 culture = "en-US"
             });
+        }
+
+        public static void AddApiRoutes(this IRouteBuilder builder, string controllerName, string url, string version, bool hasList = true, bool hasSingle = true)
+        {
+            if (string.IsNullOrWhiteSpace(controllerName))
+                throw new System.ArgumentException("Controller name is not specified.", nameof(controllerName));
+
+            if (string.IsNullOrWhiteSpace(url))
+                throw new System.ArgumentException("Url is not specified.", nameof(url));
+
+            var areaPrefix = $"Api";
+            var areaName = $"{areaPrefix}_{version}";
+            if (hasList)
+            {
+                builder.MapAreaRoute($"{areaPrefix}_{controllerName}_List", areaName, url, new
+                {
+                    controller = controllerName,
+                    action = "List"
+                });
+            }
+
+            if (hasSingle)
+            {
+                builder.MapAreaRoute($"{areaPrefix}_{controllerName}", areaName, $"{url.TrimEnd('/')}/{{id?}}", new
+                {
+                    controller = controllerName,
+                    action = "Item"
+                });
+            }
         }
     }
 }

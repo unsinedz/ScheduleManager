@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ScheduleManager.Domain.Entities;
+using ScheduleManager.Domain.Extensions;
 
 namespace ScheduleManager.Data.Entities
 {
@@ -37,8 +38,11 @@ namespace ScheduleManager.Data.Entities
 
         public async Task<IEnumerable<TEntity>> ListAsync(ISpecification<TEntity> specification)
         {
+            var usePaging = specification.PageSize > 0;
             return await _context.Set<TEntity>()
-                .Where(specification.Criteria)
+                .FilterIf(specification.Criteria != null, specification.Criteria)
+                .SkipIf(usePaging, specification.PageSize * specification.PageIndex)
+                .TakeIf(usePaging, specification.PageSize)
                 .ToListAsync();
         }
 

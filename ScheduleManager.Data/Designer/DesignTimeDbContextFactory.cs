@@ -8,7 +8,7 @@ namespace ScheduleManager.Data.Designer
 {
     internal class Data
     {
-        public const string StubConnectionString = "";
+        public const string StubConnectionString = "Server=localhost;Database=schedule_manager;Uid=root;Pwd=root;";
     }
 
     public class CommonDesignTimeDbContextFactory : IDesignTimeDbContextFactory<CommonContext>

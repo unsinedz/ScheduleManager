@@ -1,10 +1,12 @@
 @{
     var metadata = ViewData.ModelMetadata;
     var name = metadata.DisplayName ?? metadata.Name;
+    var modelValue = (bool?)Model;
+    var value = modelValue.HasValue && modelValue.Value;
 }
 <p>
     <label>
-        <input type="checkbox" class="filled-in" checked="checked" />
+        <input type="checkbox" class="filled-in" @When(value, () => Attribute("checked", string.Empty)) />
         <span>@name</span>
     </label>
 </p>

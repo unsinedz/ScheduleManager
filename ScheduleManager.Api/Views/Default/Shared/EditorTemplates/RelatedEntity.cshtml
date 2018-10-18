@@ -1,0 +1,35 @@
+@{
+    var routeName = (string)ViewData.ModelMetadata.AdditionalValues.GetValueOrDefault(Constants.Keys.RelatedEntityFetchRoute);
+    var routeArea = (string)ViewData.ModelMetadata.AdditionalValues.GetValueOrDefault(Constants.Keys.RelatedEntityFetchRouteArea);
+    var entityType = (string)ViewData.ModelMetadata.AdditionalValues.GetValueOrDefault(Constants.Keys.RelatedEntityType);
+    var required = (bool?)ViewData.ModelMetadata.AdditionalValues.GetValueOrDefault(Constants.Keys.RelatedEntityRequired);
+    var errorMessage = (string)ViewData.ModelMetadata.AdditionalValues.GetValueOrDefault(Constants.Keys.RelatedEntityErrorMessage);
+    var routeValues = string.IsNullOrEmpty(routeArea) ? null : new { area = routeArea };
+    var selectMultiple = (bool?)ViewData.ModelMetadata.AdditionalValues.GetValueOrDefault(Constants.Keys.RelatedEntitySelectMultiple);
+    var htmlName = Html.DisplayName(string.Empty);
+    var limit = 5;
+    dynamic htmlAttributes = new ExpandoObject();
+    var htmlAttributesMap = (IDictionary<string, object>)htmlAttributes;
+    htmlAttributes.placeholder = htmlName;
+    htmlAttributes.autocomplete = "off";
+    htmlAttributesMap.Add("data-autocomplete", "true");
+    htmlAttributesMap.Add("data-autocomplete-url", Url.RouteUrl(routeName, routeValues));
+    htmlAttributesMap.Add("data-autocomplete-limit", limit);
+    htmlAttributesMap.Add("data-autocomplete-multiple", selectMultiple.Value.ToString().ToLower());
+    htmlAttributesMap.Add("data-autocomplete-type", entityType);
+    if (Model != null)
+    {
+        htmlAttributesMap.Add("data-autocomplete-data", JsonConvert.SerializeObject(Model));
+    }
+
+    if (required.HasValue && required.Value && !string.IsNullOrEmpty(errorMessage))
+    {
+        htmlAttributesMap.Add("data-val", "true");
+        htmlAttributesMap.Add("data-val-autocompleterequired", string.Format(Texts[errorMessage].Value, htmlName));
+    }
+}
+@if (!string.IsNullOrWhiteSpace(routeName) && selectMultiple.HasValue)
+{
+    <i class="material-icons prefix">search</i>
+    @Html.TextBox(string.Empty, string.Empty, (object)htmlAttributes)
+}

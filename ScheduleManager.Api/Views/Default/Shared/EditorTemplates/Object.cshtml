@@ -2,7 +2,7 @@
     Func<ModelMetadata, bool> shouldShow = metadata =>
     {
         return metadata.ShowForEdit
-            && !metadata.IsComplexType;
+            && (!string.IsNullOrEmpty(metadata.TemplateHint) || !metadata.IsComplexType);
     };
 }
 @if (ViewData.TemplateInfo.TemplateDepth > 1)
@@ -28,7 +28,7 @@ else
         {
             var labelHtml = Html.Label(prop.PropertyName);
             <div class="input-field">
-                @Html.Editor(prop.PropertyName, new { htmlAttributes = new { placeholder = Html.DisplayName(prop.PropertyName) } }) @Html.ValidationMessage(prop.PropertyName, "*")
+                @Html.Editor(prop.PropertyName, new { htmlAttributes = new { placeholder = Html.DisplayName(prop.PropertyName) } }) @Html.ValidationMessage(prop.PropertyName, new { @class = "helper-text" })
                 @if (!string.IsNullOrEmpty(labelHtml.ToString()))
                 {
                     @labelHtml
