@@ -15,10 +15,16 @@
     </environment>
 </head>
 <body class="grey lighten-4">
-    <header>
-        @await Component.InvokeAsync("Navigation")
-    </header>
-    <div class="content">
+    @{
+        var showNavigation = User.Identity.IsAuthenticated;
+    }
+    @if (showNavigation)
+    {
+        <header>
+            @await Component.InvokeAsync("Navigation")
+        </header>
+    }
+    <div class="content @When(showNavigation, () => ToHtml("content-wrapper"))">
         @RenderBody()
     </div>
 

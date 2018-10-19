@@ -22,7 +22,8 @@ namespace ScheduleManager.Authentication
         public void RegisterDependencies(IServiceCollection services)
         {
             services.ConfigureApplicationCookie(ConfigureAuthentication);
-            services.AddDbContext<IdentityContext>(options => options.UseMySql(_options.DatabaseConnectionString));
+            services.AddDbContext<IdentityContext>(options => options.UseMySql(_options.DatabaseConnectionString,
+                builder => builder.MigrationsAssembly("ScheduleManager.Authentication")));
             services.AddIdentity<ApplicationUser, UserRole>()
                 .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders();

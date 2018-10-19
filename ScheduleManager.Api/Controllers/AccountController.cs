@@ -20,8 +20,11 @@ namespace ScheduleManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
+            if (HttpContext.User.Identity.IsAuthenticated)
+                return LocalRedirect(returnUrl ?? "/");
+
             var user = GetTemplateUser();
             if (await _userManager.FindByEmailAsync(user.Email) == null)
                 await _userManager.CreateAsync(user, "Qweqwe123");

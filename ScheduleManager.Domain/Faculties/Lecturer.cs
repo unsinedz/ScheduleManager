@@ -6,6 +6,6 @@ namespace ScheduleManager.Domain.Faculties
     {
         public virtual string Name { get; set; }
 
-        public Department Department { get; set; }
+        public virtual Department Department { get; set; }
     }
 }

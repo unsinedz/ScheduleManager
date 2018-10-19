@@ -8,10 +8,7 @@ namespace ScheduleManager.Api.Components
         public async Task<IViewComponentResult> InvokeAsync()
         {
             await Task.CompletedTask;
-            if (HttpContext.User.Identity.IsAuthenticated)
-                return View("_Navigation");
-
-            return Content(string.Empty);
+            return View("_Navigation");
         }
     }
 }

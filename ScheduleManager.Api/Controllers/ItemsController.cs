@@ -49,7 +49,7 @@ namespace ScheduleManager.Api.Controllers
                 return View(model: model);
 
             var item = new TItem();
-            if (await TrySaveItemAsync(new TItem(), model))
+            if (await TrySaveItemAsync(new TItem(), model, true))
                 return RedirectToAction(nameof(List));
 
             ModelState.AddModelError(string.Empty, "Item creation failed.");

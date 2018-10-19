@@ -1,5 +1,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using ScheduleManager.Data.Common;
 using ScheduleManager.Data.Entities;
@@ -31,10 +32,12 @@ namespace ScheduleManager.Data
 
         private void RegisterContexts(IServiceCollection services)
         {
-            services.AddDbContext<CommonContext>(options => options.UseMySql(_options.DatabaseConnectionString));
-            services.AddDbContext<FacultyContext>(options => options.UseMySql(_options.DatabaseConnectionString));
-            services.AddDbContext<ScheduleContext>(options => options.UseMySql(_options.DatabaseConnectionString));
+            services.AddDbContext<CommonContext>(options => options.UseLazyLoadingProxies().UseMySql(_options.DatabaseConnectionString, ConfigureMySqlContext));
+            services.AddDbContext<FacultyContext>(options => options.UseLazyLoadingProxies().UseMySql(_options.DatabaseConnectionString, ConfigureMySqlContext));
+            services.AddDbContext<ScheduleContext>(options => options.UseLazyLoadingProxies().UseMySql(_options.DatabaseConnectionString, ConfigureMySqlContext));
         }
+
+        private void ConfigureMySqlContext(MySqlDbContextOptionsBuilder builder) => builder.MigrationsAssembly("ScheduleManager.Data");
 
         private void RegisterServices(IServiceCollection services)
         {

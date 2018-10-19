@@ -23,5 +23,7 @@ namespace ScheduleManager.Api.Views
 
             return new HtmlString($"{name}=\"{value}\"");
         }
+
+        public static IHtmlContent ToHtml(string str) => new HtmlString(str);
     }
 }
