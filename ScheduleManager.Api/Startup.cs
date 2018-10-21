@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using ScheduleManager.Api.Serialization.Json;
 using ScheduleManager.Authentication;
 using ScheduleManager.Data;
 using ScheduleManager.Domain;
@@ -46,19 +48,25 @@ namespace ScheduleManager.Api
             if (Configuration.GetSection("Security")?.GetValue("HttpToHttpsRedirect", false) ?? false)
                 app.UseHttpsRedirection();
 
-            app.UseAuthentication();
-            app.UseStaticFiles();
-            app.UseRequestLocalization(options =>
-            {
-                options.SupportedCultures = new[]
+            app.UseAuthentication()
+                .UseStaticFiles()
+                .UseRequestLocalization(options =>
                 {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("uk")
-                };
-                options.SupportedUICultures = options.SupportedCultures;
-                options.DefaultRequestCulture = new RequestCulture("en-US");
-            });
-            app.UseMvc(RouteConfig.ConfigureRoutes);
+                    options.SupportedCultures = new[]
+                    {
+                        new CultureInfo("en-US"),
+                        new CultureInfo("uk")
+                    };
+                    options.SupportedUICultures = options.SupportedCultures;
+                    options.DefaultRequestCulture = new RequestCulture("en-US");
+                })
+                .UseMvc(RouteConfig.ConfigureRoutes);
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                ContractResolver = new IgnoreProxiesContractResolver()
+            };
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -79,30 +87,10 @@ namespace ScheduleManager.Api
                         TypeResolver.Current.GetService<StringLocalizationManager>();
                 });
 
-            services.ConfigureMvc();     
-            services.Configure<IISOptions>(options =>
-            {
-                options.ForwardClientCertificate = true;
-            });
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-
-                options.SignIn.RequireConfirmedEmail = true;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
-
-                options.Lockout.AllowedForNewUsers = true;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-            });
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
+            services.ConfigureMvc()
+                .ConfigureIIS()
+                .ConfigureIdentity()
+                .ConfigureRouteOptions();
         }
 
         private void AddProjectModules(IServiceCollection services)
