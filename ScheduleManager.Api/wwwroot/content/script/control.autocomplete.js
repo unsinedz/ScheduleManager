@@ -97,50 +97,89 @@ Framework.Autocomplete = (function ($) {
                 }
             }
 
+            var elementData = $el.attr('data-autocomplete-data');
+            if (elementData !== undefined)
+                elementData = JSON.parse(elementData);
+
+            if (!Array.isArray(elementData))
+                elementData = [elementData];
+
             var options = AutocompleteOptions.fromElement($el);
             if (options.url && options.url.length) {
                 $.get(options.url).done(function (data) {
-                    var autocompleteData = data;
                     if (typeof autocompleteMapper === 'function')
-                        autocompleteData = autocompleteMapper(data);
+                        data = autocompleteMapper(data);
+
+                    var autocompleteData = [],
+                        valueData = [];
+                    if (Array.isArray(elementData) && elementData.length) {
+                        $.each(data, function () {
+                            var isValueData = false;
+                            var _data = this;
+                            $.each(elementData, function () {
+                                if (JSON.stringify(_data) === JSON.stringify(this)) {
+                                    isValueData = true;
+                                    return false;
+                                }
+                            });
+                            if (isValueData && (options.allowMultiple || valueData.length <= 1))
+                                valueData.push(_data);
+                            else
+                                autocompleteData.push(_data);
+                        });
+                    }
+                    else
+                        autocompleteData = data;
 
                     var $chips = $('<div></div>');
                     $chips.insertAfter($el);
+                    $.each(valueData, function () {
+                        var autocompleteItem = autocompleteMapper(this);
+                        handleAutocomplete($el, autocompleteItem.key, autocompleteItem.data, chipMapper, chipSuffix, autocompleteData, options, $chips);
+                    });
                     $el.autocomplete({
                         limit: options.limit,
                         data: autocompleteData,
                         onAutocomplete: function (data, key) {
-                            var title = data;
-                            var value = data;
-                            if (typeof chipMapper === 'function') {
-                                var chipData = chipMapper(data);
-                                title = chipData.title;
-                                value = chipData.value;
-                            }
-
-                            var $chip = $(makeChip(title, value, $el.prop('name') + chipSuffix));
-                            $chip.find('.close').click(function () {
-                                autocompleteData[key] = data;
-                                removeElementAutocompleteData($el, key);
-                                if (!options.allowMultiple)
-                                    $el.prop('readonly', false);
-
-                                $el.trigger('change');
-                                $el.valid();
-                            });
-
-                            $chips.append($chip);
-                            delete autocompleteData[key];
-                            addElementAutocompleteData($el, key, data);
-                            if (!options.allowMultiple)
-                                $el.prop('readonly', true);
-
-                            $el.valid();
+                            handleAutocomplete($el, data, key, chipMapper, chipSuffix, autocompleteData, options, $ships);
                         }
                     });
                 });
             }
         });
+    }
+
+    function handleAutocomplete($element, key, data, chipMapper, chipSuffix, autocompleteData, autocompleteOptions,
+        $chips) {
+        var title = data;
+        var value = data;
+        if (typeof chipMapper === 'function') {
+            var chipData = chipMapper(data);
+            title = chipData.title;
+            value = chipData.value;
+        }
+
+        if (autocompleteOptions.allowMultiple)
+            chipSuffix = '[' + $chips.children().length + ']' + chipSuffix;
+
+        var $chip = $(makeChip(title, value, $element.prop('name') + chipSuffix));
+        $chip.find('.close').click(function () {
+            autocompleteData[key] = data;
+            removeElementAutocompleteData($element, key);
+            if (!autocompleteOptions.allowMultiple)
+                $element.prop('readonly', false);
+
+            $element.trigger('change');
+            $element.valid();
+        });
+
+        $chips.append($chip);
+        delete autocompleteData[key];
+        addElementAutocompleteData($element, key, data);
+        if (!autocompleteOptions.allowMultiple)
+            $element.prop('readonly', true);
+
+        $element.valid();
     }
 
     function addElementAutocompleteData($element, key, data) {

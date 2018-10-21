@@ -116,8 +116,7 @@ namespace ScheduleManager.Api.Controllers
             if (create)
                 item.Id = Guid.NewGuid();
 
-            var updated = await model.TryUpdateEntityProperties(item);
-            if (updated)
+            if (await model.TryUpdateEntityProperties(item))
             {
                 var action = create
                     ? ItemProvider.CreateAsync(item)
@@ -125,7 +124,7 @@ namespace ScheduleManager.Api.Controllers
                 await action;
             }
 
-            return updated;
+            return true;
         }
 
         protected virtual TItemViewModel CreateEmptyModel()

@@ -3,12 +3,14 @@ var Framework = Framework || {};
     if (Framework.Autocomplete) {
         Framework.Autocomplete.addTypeMapper('faculty', function (data) {
             var autocompleteData = {};
-            if (data && data.length) {
+            if (Array.isArray(data)) {
                 $.each(data, function () {
                     if (this.title)
                         autocompleteData[this.title] = this;
                 });
             }
+            else if (data)
+                return { key: data.title, data: data };
 
             return autocompleteData;
         }, function (faculty) {
@@ -20,18 +22,20 @@ var Framework = Framework || {};
 
         Framework.Autocomplete.addTypeMapper('lecturer', function (data) {
             var autocompleteData = {};
-            if (data && data.length) {
+            if (Array.isArray(data)) {
                 $.each(data, function () {
                     if (this.title)
                         autocompleteData[this.title] = this;
                 });
             }
+            else if (data)
+                return { key: data.title, data: data };
 
             return autocompleteData;
-        }, function (faculty) {
+        }, function (lecturer) {
             return {
-                title: faculty.title,
-                value: faculty.id
+                title: lecturer.title,
+                value: lecturer.id
             };
         }, '.Id');
     }

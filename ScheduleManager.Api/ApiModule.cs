@@ -56,7 +56,7 @@ namespace ScheduleManager.Api
         public void ConfigureJson(MvcJsonOptions options)
         {
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            options.SerializerSettings.ContractResolver = new IgnoreProxiesContractResolver();
+            options.SerializerSettings.ContractResolver = new IgnoreProxiesLowercaseContractResolver();
             JsonConvert.DefaultSettings = () => options.SerializerSettings;
         }
     }
