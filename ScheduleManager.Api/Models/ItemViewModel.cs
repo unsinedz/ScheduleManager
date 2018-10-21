@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
+using System.Linq;
 using System.Threading.Tasks;
+using ScheduleManager.Domain.Entities;
 using ScheduleManager.Domain.Extensions;
 
 namespace ScheduleManager.Api.Models
@@ -22,11 +23,14 @@ namespace ScheduleManager.Api.Models
 
         public abstract Task<bool> TryUpdateEntityProperties(TItem entity);
 
-        protected virtual bool TryUpdateEntityCollection<T, TCollection>(ref TCollection entityCollection, ref TCollection modelCollection, Func<TCollection> defaultInstatiator)
+        protected virtual bool TryUpdateEntityCollection<T, TCollection>(TCollection entityCollection, TCollection modelCollection)
             where TCollection : ICollection<T>
         {
-            if (defaultInstatiator == null)
-                throw new ArgumentNullException(nameof(defaultInstatiator));
+            if (entityCollection == null)
+                throw new ArgumentNullException(nameof(entityCollection));
+
+            if (modelCollection == null)
+                throw new ArgumentNullException(nameof(modelCollection));
 
             if (object.ReferenceEquals(entityCollection, modelCollection))
                 return false;
@@ -34,11 +38,12 @@ namespace ScheduleManager.Api.Models
             if (entityCollection.IsNullOrEmpty() && modelCollection.IsNullOrEmpty())
                 return false;
 
-            if (entityCollection == null)
-                entityCollection = defaultInstatiator();
-
-            if (modelCollection == null)
-                modelCollection = defaultInstatiator();
+            if (modelCollection.Count == 0)
+            {
+                var updated = entityCollection.Count > 0;
+                entityCollection.Clear();
+                return updated;
+            }
 
             var collectionsDiffer = !modelCollection.IsSimilarAs(entityCollection);
             if (collectionsDiffer)
@@ -48,6 +53,38 @@ namespace ScheduleManager.Api.Models
             }
 
             return collectionsDiffer;
+        }
+
+        protected virtual async Task<IList<T>> PrepareModelCollection<T>(IList<T> modelCollection, IList<T> entityCollection, AsyncByIdLoaderDelegate<T, Guid> byIdLoader)
+            where T : Entity
+        {
+            IList<T> preparedModelCollection = null;
+            if (!modelCollection.IsNullOrEmpty())
+            {
+                // load tracked entities and mark untracked
+                var entityIdsToLoad = new List<Guid>();
+                for (var i = 0; i < modelCollection.Count; i++)
+                {
+                    var loadedEntity = entityCollection?.FirstOrDefault(x => x.Id == modelCollection[i].Id);
+                    if (loadedEntity == null)
+                        entityIdsToLoad.Add(modelCollection[i].Id);
+                    else
+                        modelCollection[i] = loadedEntity;
+                }
+
+                // load untracked entities
+                var loadedEntities = await byIdLoader(entityIdsToLoad);
+                var absentEntityIds = entityIdsToLoad.Except(loadedEntities.Select(x => x.Id)).ToList();
+                preparedModelCollection = modelCollection.Where(x => !absentEntityIds.Contains(x.Id)).ToList();
+                for (var i = 0; i < preparedModelCollection.Count; i++)
+                {
+                    var loadedEntity = loadedEntities.FirstOrDefault(x => x.Id == preparedModelCollection[i].Id);
+                    if (loadedEntity != null)
+                        preparedModelCollection[i] = loadedEntity;
+                }
+            }
+
+            return preparedModelCollection ?? modelCollection ?? new List<T>();
         }
     }
 }

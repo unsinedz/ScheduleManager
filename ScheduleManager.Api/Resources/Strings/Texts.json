@@ -66,12 +66,20 @@
             "Value": "Faculties"
         },
         {
+            "Key": "List_Lecturers",
+            "Value": "Lecturers"
+        },
+        {
             "Key": "List_Departments",
             "Value": "Departments"
         },
         {
             "Key": "Faculty_Title",
             "Value": "Title"
+        },
+        {
+            "Key": "Lecturer_Name",
+            "Value": "Name"
         },
         {
             "Key": "Department_Title",
@@ -88,6 +96,10 @@
         {
             "Key": "EntityField_Title",
             "Value": "Title"
+        },
+        {
+            "Key": "EntityField_Name",
+            "Value": "Name"
         }
     ]
 }

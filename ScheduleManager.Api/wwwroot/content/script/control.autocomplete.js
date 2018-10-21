@@ -43,11 +43,10 @@ Framework.Autocomplete = (function ($) {
             // put original entry to be used on click
             $autocompleteOption.data('entry', _entry);
             // using imageSrc instead of direct data
-            if (!!_entry.data.imageSrc) {
+            if (_entry.data && _entry.data.imageSrc)
                 $autocompleteOption.append("<img src=\"" + _entry.data.imageSrc + "\" class=\"right circle\"><span>" + _entry.key + "</span>");
-            } else {
+            else
                 $autocompleteOption.append('<span>' + _entry.key + '</span>');
-            }
 
             $(this.container).append($autocompleteOption);
             this._highlight(val, $autocompleteOption);
@@ -69,27 +68,38 @@ Framework.Autocomplete = (function ($) {
             this.options.onAutocomplete.call(this, data, key);
     };
 
-    function AutocompleteOptions(url, limit, allowMultiple) {
+    function AutocompleteOptions(url, limit, allowMultiple, autocompleteType, autocompleteData) {
         this.url = url;
         this.limit = limit;
         this.allowMultiple = allowMultiple;
+        this.autocompleteType = autocompleteType;
+        this.autocompleteData = autocompleteData;
     }
     AutocompleteOptions.fromElement = function ($element) {
         return new AutocompleteOptions($element.attr('data-autocomplete-url'),
             $element.attr('data-autocomplete-limit'),
-            $element.attr('data-autocomplete-multiple').toLowerCase() === 'true');
+            $element.attr('data-autocomplete-multiple').toLowerCase() === 'true',
+            $element.attr('data-autocomplete-type'),
+            $element.attr('data-autocomplete-data'));
     };
 
-    function init(selector, chipSuffix, autocompleteMapper, chipMapper) {
+    function init(selector) {
         var $objects = $(selector);
         if (!$objects.length)
             return;
 
         $objects.each(function () {
             var $el = $(this);
-            var autocompleteType = $el.attr('data-autocomplete-type');
-            if (autocompleteType && autocompleteType.length) {
-                var typeMapper = typeMappers[autocompleteType];
+            $el.data('name', $el.attr('name'));
+            $el.closest('form').on('submit', function () {
+                if ($(this).valid())
+                    $el.removeAttr('name');
+            });
+
+            var autocompleteMapper, chipMapper, chipSuffix;
+            var options = AutocompleteOptions.fromElement($el);
+            if (options.autocompleteType) {
+                var typeMapper = typeMappers[options.autocompleteType];
                 if (typeMapper) {
                     autocompleteMapper = autocompleteMapper || typeMapper.autocomplete;
                     chipMapper = chipMapper || typeMapper.chip;
@@ -97,26 +107,21 @@ Framework.Autocomplete = (function ($) {
                 }
             }
 
-            var elementData = $el.attr('data-autocomplete-data');
-            if (elementData !== undefined)
-                elementData = JSON.parse(elementData);
+            if (options.autocompleteData) {
+                options.autocompleteData = JSON.parse(options.autocompleteData);
+                if (!Array.isArray(options.autocompleteData))
+                options.autocompleteData = [options.autocompleteData];
+            }
 
-            if (!Array.isArray(elementData))
-                elementData = [elementData];
-
-            var options = AutocompleteOptions.fromElement($el);
             if (options.url && options.url.length) {
                 $.get(options.url).done(function (data) {
-                    if (typeof autocompleteMapper === 'function')
-                        data = autocompleteMapper(data);
-
                     var autocompleteData = [],
                         valueData = [];
-                    if (Array.isArray(elementData) && elementData.length) {
+                    if (Array.isArray(options.autocompleteData) && options.autocompleteData.length) {
                         $.each(data, function () {
                             var isValueData = false;
                             var _data = this;
-                            $.each(elementData, function () {
+                            $.each(options.autocompleteData, function () {
                                 if (JSON.stringify(_data) === JSON.stringify(this)) {
                                     isValueData = true;
                                     return false;
@@ -131,17 +136,26 @@ Framework.Autocomplete = (function ($) {
                     else
                         autocompleteData = data;
 
+                    var useAutocompleteMapper = typeof autocompleteMapper === 'function';
+                    if (useAutocompleteMapper) {
+                        autocompleteData = autocompleteMapper(autocompleteData);
+                        valueData = autocompleteMapper(valueData);
+                    }
+
                     var $chips = $('<div></div>');
                     $chips.insertAfter($el);
                     $.each(valueData, function () {
-                        var autocompleteItem = autocompleteMapper(this);
-                        handleAutocomplete($el, autocompleteItem.key, autocompleteItem.data, chipMapper, chipSuffix, autocompleteData, options, $chips);
+                        var autocompleteItem = this;
+                        if (useAutocompleteMapper)
+                            autocompleteItem = autocompleteMapper(autocompleteItem);
+
+                        handleAutocomplete($el, autocompleteItem.data, autocompleteItem.key, chipMapper, chipSuffix, autocompleteData, options, $chips);
                     });
                     $el.autocomplete({
                         limit: options.limit,
                         data: autocompleteData,
                         onAutocomplete: function (data, key) {
-                            handleAutocomplete($el, data, key, chipMapper, chipSuffix, autocompleteData, options, $ships);
+                            handleAutocomplete($el, data, key, chipMapper, chipSuffix, autocompleteData, options, $chips);
                         }
                     });
                 });
@@ -149,7 +163,7 @@ Framework.Autocomplete = (function ($) {
         });
     }
 
-    function handleAutocomplete($element, key, data, chipMapper, chipSuffix, autocompleteData, autocompleteOptions,
+    function handleAutocomplete($element, data, key, chipMapper, chipSuffix, autocompleteData, autocompleteOptions,
         $chips) {
         var title = data;
         var value = data;
@@ -159,15 +173,18 @@ Framework.Autocomplete = (function ($) {
             value = chipData.value;
         }
 
-        if (autocompleteOptions.allowMultiple)
-            chipSuffix = '[' + $chips.children().length + ']' + chipSuffix;
+        var chipIndex = undefined;
+        if (autocompleteOptions.allowMultiple) {
+            chipIndex = $chips.children().length;
+            chipSuffix = '[' + chipIndex + ']' + chipSuffix;
+        }
 
-        var $chip = $(makeChip(title, value, $element.prop('name') + chipSuffix));
+        var $chip = $(makeChip(title, value, $element.data('name') + chipSuffix, chipIndex));
         $chip.find('.close').click(function () {
             autocompleteData[key] = data;
             removeElementAutocompleteData($element, key);
             if (!autocompleteOptions.allowMultiple)
-                $element.prop('readonly', false);
+                $element.prop('disabled', false);
 
             $element.trigger('change');
             $element.valid();
@@ -177,7 +194,7 @@ Framework.Autocomplete = (function ($) {
         delete autocompleteData[key];
         addElementAutocompleteData($element, key, data);
         if (!autocompleteOptions.allowMultiple)
-            $element.prop('readonly', true);
+            $element.prop('disabled', true);
 
         $element.valid();
     }
@@ -196,9 +213,14 @@ Framework.Autocomplete = (function ($) {
         $element.data('autocompleteValue', autocompleteValue);
     }
 
-    function makeChip(title, value, inputName) {
+    function makeChip(title, value, inputName, valueIndex) {
+        var indexInput = '';
+        if (valueIndex !== undefined)
+            indexInput = '<input type="hidden" name="' + inputName.replace(/(\.[^\.]+$)/g, '.Index') + '" value="' + valueIndex + '" />';
+
         return '<div class="chip">' +
             title +
+            indexInput +
             '<input type="hidden" name="' + inputName + '" value="' + value + '" />' +
             '<i class="close material-icons"> close</i>' +
             '</div>';
@@ -212,7 +234,7 @@ Framework.Autocomplete = (function ($) {
         };
     }
 
-    $(document).ready(function () {
+    $(function () {
         init('[data-autocomplete="true"]');
     });
 

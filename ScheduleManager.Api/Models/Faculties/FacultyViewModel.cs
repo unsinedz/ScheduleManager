@@ -8,6 +8,7 @@ using ScheduleManager.Domain.Extensions;
 using System;
 using ScheduleManager.Domain.Entities;
 using ScheduleManager.Api.Metadata.Attributes;
+using ScheduleManager.Api.Metadata;
 
 namespace ScheduleManager.Api.Models.Faculties
 {
@@ -24,7 +25,8 @@ namespace ScheduleManager.Api.Models.Faculties
         [Required(ErrorMessage = "Errors_Required")]
         public virtual string Title { get; set; }
 
-        [RelatedApiEntitySelector("Api_Department_List", ApiVersion = "V1", SelectMultiple = true)]
+        [RelatedApiEntitySelector("Api_Department_List", ApiVersion = "V1", EntityType = Constants.EntityType.Department,
+            SelectMultiple = true)]
         public virtual IList<Department> Departments { get; set; }
 
         public override bool Editable => true;
@@ -60,19 +62,19 @@ namespace ScheduleManager.Api.Models.Faculties
 
         protected virtual async Task<bool> TryUpdateDepartments(Faculty entity)
         {
-            var entityCollection = entity.Departments;
+            var entityCollection = entity.Departments ?? new List<Department>();
             var modelCollection = this.Departments;
-            if (TryUpdateEntityCollection<Department, IList<Department>>(ref entityCollection, ref modelCollection, () => new List<Department>())
-                && !(entityCollection.Count == 0 && entity.Departments == null))
+            var preparedModelCollection = await PrepareModelCollection(modelCollection, entityCollection, ids =>
             {
-                var preparedCollection = await Task.WhenAll(entityCollection.Select(x => _departmentProvider.GetByIdAsync(x.Id)));
-                if (entity.Departments == null)
-                    entity.Departments = preparedCollection;
-                else
+                return _departmentProvider.ListAsync(new Specification<Department>
                 {
-                    entity.Departments.Clear();
-                    entity.Departments.AddRange(preparedCollection);
-                }
+                    Criteria = x => ids.Contains(x.Id)
+                });
+            });
+            if (TryUpdateEntityCollection<Department, IList<Department>>(entityCollection, preparedModelCollection))
+            {
+                if (entity.Departments == null)
+                    entity.Departments = entityCollection;
 
                 return true;
             }

@@ -26,10 +26,8 @@ namespace ScheduleManager.Api.Controllers
             return items.OrderBy(x => x.Title);
         }
 
-        protected override DepartmentViewModel CreateEmptyModel()
-        {
-            return new DepartmentViewModel(_facultyProvider, _lecturerProvider);
-        }
+        protected override DepartmentViewModel CreateEmptyModel() =>
+            new DepartmentViewModel(_facultyProvider, _lecturerProvider);
 
         protected override string GetListTitle() => "Departments";
     }

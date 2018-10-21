@@ -15,10 +15,8 @@ namespace ScheduleManager.Api.Controllers
             this._departmentProvider = departmentProvider;
         }
 
-        protected override FacultyViewModel CreateEmptyModel()
-        {
-            return new FacultyViewModel(_departmentProvider);
-        }
+        protected override FacultyViewModel CreateEmptyModel() =>
+            new FacultyViewModel(_departmentProvider);
 
         protected override string GetListTitle() => "Faculties";
     }

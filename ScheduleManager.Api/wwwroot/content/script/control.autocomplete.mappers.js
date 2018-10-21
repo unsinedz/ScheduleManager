@@ -24,6 +24,25 @@ var Framework = Framework || {};
             var autocompleteData = {};
             if (Array.isArray(data)) {
                 $.each(data, function () {
+                    if (this.name)
+                        autocompleteData[this.name] = this;
+                });
+            }
+            else if (data)
+                return { key: data.name, data: data };
+
+            return autocompleteData;
+        }, function (lecturer) {
+            return {
+                title: lecturer.name,
+                value: lecturer.id
+            };
+        }, '.Id');
+
+        Framework.Autocomplete.addTypeMapper('department', function (data) {
+            var autocompleteData = {};
+            if (Array.isArray(data)) {
+                $.each(data, function () {
                     if (this.title)
                         autocompleteData[this.title] = this;
                 });
@@ -32,10 +51,10 @@ var Framework = Framework || {};
                 return { key: data.title, data: data };
 
             return autocompleteData;
-        }, function (lecturer) {
+        }, function (department) {
             return {
-                title: lecturer.title,
-                value: lecturer.id
+                title: department.title,
+                value: department.id
             };
         }, '.Id');
     }

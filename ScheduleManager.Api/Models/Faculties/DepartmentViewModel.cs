@@ -29,11 +29,12 @@ namespace ScheduleManager.Api.Models.Faculties
         [StringLength(50, ErrorMessage = "Errors_StringLength")]
         public virtual string Title { get; set; }
 
-        [RelatedApiEntitySelector("Api_Lecturer_List", ApiVersion = "V1", SelectMultiple = true)]
+        [RelatedApiEntitySelector("Api_Lecturer_List", ApiVersion = "V1", EntityType = Constants.EntityType.Lecturer,
+            SelectMultiple = true)]
         public virtual IList<Lecturer> Lecturers { get; set; }
 
         [RelatedApiEntitySelector("Api_Faculty_List", ApiVersion = "V1", EntityType = Constants.EntityType.Faculty,
-            Required = true, ErrorMessage = "Errors_RelatedEntity_Required")]
+            Required = true, ErrorMessage = "Errors_Required")]
         public virtual Faculty Faculty { get; set; }
 
         public override bool Editable => true;
@@ -65,11 +66,12 @@ namespace ScheduleManager.Api.Models.Faculties
             if (!string.Equals(entity.Title, this.Title) && (updated = true))
                 entity.Title = this.Title;
 
-            var entityHasFaculty = entity.Faculty != null;
-            var modelHasFaculty = this.Faculty != null;
-            var facultyIdsDiffer = (entityHasFaculty ^ modelHasFaculty) || !object.Equals(entity.Faculty?.Id, this.Faculty?.Id);
-            if (facultyIdsDiffer && (updated = true))
-                entity.Faculty = await _facultyProvider.GetByIdAsync(this.Faculty.Id);
+            if (!object.Equals(entity.Faculty?.Id, this.Faculty?.Id) && (updated = true))
+            {
+                entity.Faculty = this.Faculty.Id == null
+                    ? null
+                    : await _facultyProvider.GetByIdAsync(this.Faculty.Id);
+            }
 
             updated = updated | await TryUpdateLecturers(entity);
             return updated;
@@ -77,20 +79,20 @@ namespace ScheduleManager.Api.Models.Faculties
 
         protected virtual async Task<bool> TryUpdateLecturers(Department entity)
         {
-            var entityCollection = entity.Lecturers;
+            var entityCollection = entity.Lecturers ?? new List<Lecturer>();
             var modelCollection = this.Lecturers;
-            if (TryUpdateEntityCollection<Lecturer, IList<Lecturer>>(ref entityCollection, ref modelCollection, () => new List<Lecturer>())
-                && !(entityCollection.Count == 0 && entity.Lecturers == null))
+            var preparedModelCollection = await PrepareModelCollection(modelCollection, entityCollection, ids =>
             {
-                var preparedCollection = await Task.WhenAll(entityCollection.Select(x => _lecturerProvider.GetByIdAsync(x.Id)));
-                if (entity.Lecturers == null)
-                    entity.Lecturers = preparedCollection;
-                else
+                return _lecturerProvider.ListAsync(new Specification<Lecturer>
                 {
-                    entity.Lecturers.Clear();
-                    entity.Lecturers.AddRange(preparedCollection);
-                }
-                
+                    Criteria = x => ids.Contains(x.Id)
+                });
+            });
+            if (TryUpdateEntityCollection<Lecturer, IList<Lecturer>>(entityCollection, preparedModelCollection))
+            {
+                if (entity.Lecturers == null)
+                    entity.Lecturers = entityCollection;
+
                 return true;
             }
 

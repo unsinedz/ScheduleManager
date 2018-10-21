@@ -24,8 +24,11 @@ namespace ScheduleManager.Domain.Extensions
         public static bool IsSimilarAs<TModel>(this IEnumerable<TModel> source, IEnumerable<TModel> second,
             Func<TModel, TModel, bool> itemEqulityComparer = null)
         {
-            if (source.IsNullOrEmpty() || second.IsNullOrEmpty())
+            if (source.IsNullOrEmpty() && second.IsNullOrEmpty())
                 return true;
+
+            if (source.IsNullOrEmpty() || second.IsNullOrEmpty())
+                return false;
 
             var itemsEqual = itemEqulityComparer ?? new Func<TModel, TModel, bool>((x, y) => Object.ReferenceEquals(x, y));
             using (var leftEnumerator = source.GetEnumerator())
