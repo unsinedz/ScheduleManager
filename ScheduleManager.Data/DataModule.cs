@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using ScheduleManager.Data.Common;
-using ScheduleManager.Data.Entities;
 using ScheduleManager.Data.Faculties;
 using ScheduleManager.Data.Scheduling;
 using ScheduleManager.Domain;

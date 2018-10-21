@@ -61,18 +61,13 @@ namespace ScheduleManager.Api
                     options.DefaultRequestCulture = new RequestCulture("en-US");
                 })
                 .UseMvc(RouteConfig.ConfigureRoutes);
-
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                ContractResolver = new IgnoreProxiesContractResolver()
-            };
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             this.AddProjectModules(services);
             services.AddMvc()
+                .ConfigureJson()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddRazorOptions(RazorConfiguration.ConfigureRazor)
                 .AddControllersAsServices()

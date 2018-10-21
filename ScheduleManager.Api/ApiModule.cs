@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using ScheduleManager.Api.Localization.Adapters;
 using ScheduleManager.Api.Metadata;
+using ScheduleManager.Api.Serialization.Json;
 using ScheduleManager.Domain;
 
 namespace ScheduleManager.Api
@@ -50,6 +52,13 @@ namespace ScheduleManager.Api
         {
             options.LowercaseUrls = true;
         }
+
+        public void ConfigureJson(MvcJsonOptions options)
+        {
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            options.SerializerSettings.ContractResolver = new IgnoreProxiesContractResolver();
+            JsonConvert.DefaultSettings = () => options.SerializerSettings;
+        }
     }
 
     public static class ApiModuleRegistrationExtensions
@@ -82,6 +91,12 @@ namespace ScheduleManager.Api
         {
             services.Configure<RouteOptions>(ApiModule.Current.ConfigureRouteOptions);
             return services;
+        }
+
+        public static IMvcBuilder ConfigureJson(this IMvcBuilder builder)
+        {
+            builder.AddJsonOptions(ApiModule.Current.ConfigureJson);
+            return builder;
         }
     }
 }
