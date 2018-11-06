@@ -37,3 +37,9 @@ h1, h2, h3, h4, h5 {
 .field-validation-error span {
     color: #F44336;
 }
+
+.select-wrapper ~ label {
+    position: absolute;
+    top: -26px;
+    font-size: 0.8rem;
+}

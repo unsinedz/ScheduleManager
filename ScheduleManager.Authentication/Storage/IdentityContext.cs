@@ -7,7 +7,7 @@ namespace ScheduleManager.Authentication.Storage
 {
     public class IdentityContext : IdentityDbContext<ApplicationUser, UserRole, Guid>
     {
-        public IdentityContext(DbContextOptions options) : base(options)
+        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
         }
     }

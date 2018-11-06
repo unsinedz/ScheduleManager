@@ -6,7 +6,7 @@ using ScheduleManager.Api.Models.Faculties;
 using ScheduleManager.Domain.Entities;
 using ScheduleManager.Domain.Faculties;
 
-namespace ScheduleManager.Api.Controllers
+namespace ScheduleManager.Api.Controllers.Faculties
 {
     [Authorize]
     public class LecturerController : ItemsController<Lecturer, LecturerViewModel>

@@ -57,5 +57,24 @@ var Framework = Framework || {};
                 value: department.id
             };
         }, '.Id');
+
+        Framework.Autocomplete.addTypeMapper('course', function (data) {
+            var autocompleteData = {};
+            if (Array.isArray(data)) {
+                $.each(data, function () {
+                    if (this.title)
+                        autocompleteData[this.title] = this;
+                });
+            }
+            else if (data)
+                return { key: data.title, data: data };
+
+            return autocompleteData;
+        }, function (course) {
+            return {
+                title: course.title,
+                value: course.id
+            };
+        }, '.Id');
     }
 })();

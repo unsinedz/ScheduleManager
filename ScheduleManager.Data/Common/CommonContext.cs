@@ -17,7 +17,7 @@ namespace ScheduleManager.Data.Common
 
         public DbSet<TimePeriod> TimePeriods { get; set; }
 
-        public CommonContext(DbContextOptions options) : base(options)
+        public CommonContext(DbContextOptions<CommonContext> options) : base(options)
         {
         }
 

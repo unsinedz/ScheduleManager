@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
+using ScheduleManager.Api.Metadata;
 
 namespace ScheduleManager.Api
 {
@@ -12,15 +13,18 @@ namespace ScheduleManager.Api
             builder.AddControllerRoute("Faculty", "faculties/{action}", "List");
             builder.AddControllerRoute("Department", "departments/{action}", "List");
             builder.AddControllerRoute("Lecturer", "lecturers/{action}", "List");
+            builder.AddControllerRoute("Attendee", "attendees/{action}", "List");
+            builder.AddControllerRoute("Course", "courses/{action}", "List");
             ConfigureApiV1Routes(builder);
         }
 
         private static void ConfigureApiV1Routes(IRouteBuilder builder)
         {
-            var apiVersion = "V1";
+            var apiVersion = Constants.ApiVersions.V1;
             builder.AddApiRoutes("Department", $"api/{apiVersion}/departments", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("Faculty", $"api/{apiVersion}/faculties", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("Lecturer", $"api/{apiVersion}/lecturers", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("Course", $"api/{apiVersion}/courses", apiVersion, hasList: true, hasSingle: true);
         }
 
         public static void AddControllerRoute(this IRouteBuilder builder, string controllerName, string url, string defaultActionName)

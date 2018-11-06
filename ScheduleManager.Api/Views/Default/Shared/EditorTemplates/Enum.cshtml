@@ -1,0 +1,19 @@
+@{
+    var modelType = Nullable.GetUnderlyingType(ViewData.ModelMetadata.ModelType) ?? ViewData.ModelMetadata.ModelType;
+    if (modelType?.IsEnum != true)
+    {
+        throw new InvalidOperationException("Only enums are supported.");
+    }
+
+    var enumList = Html.GetEnumSelectList(modelType).ToList();
+}
+@if (enumList.Count > 0)
+{
+    <select name="@Html.Name(string.Empty)">
+        @foreach (var enumEntry in enumList)
+        {
+            <option value="@enumEntry.Value" @When(enumEntry.Disabled, ()=> Attribute("disabled"))
+                @When(enumEntry.Selected, () => Attribute("selected"))>@enumEntry.Text</option>
+        }
+    </select>
+}

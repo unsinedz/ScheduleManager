@@ -74,6 +74,14 @@
             "Value": "Departments"
         },
         {
+            "Key": "List_Attendees",
+            "Value": "Attendees"
+        },
+        {
+            "Key": "List_Courses",
+            "Value": "Courses"
+        },
+        {
             "Key": "Faculty_Title",
             "Value": "Title"
         },
@@ -94,12 +102,56 @@
             "Value": "Edit department"
         },
         {
+            "Key": "Attendee_Name",
+            "Value": "Name"
+        },
+        {
+            "Key": "Attendee_Create",
+            "Value": "New attendee"
+        },
+        {
+            "Key": "Attendee_Edit",
+            "Value": "Edit attendee"
+        },
+        {
+            "Key": "Attendee_Type",
+            "Value": "Attendee type"
+        },
+        {
+            "Key": "Attendee_Course",
+            "Value": "Course"
+        },
+        {
+            "Key": "Attendee_Faculty",
+            "Value": "Faculty"
+        },
+        {
+            "Key": "Course_Title",
+            "Value": "Title"
+        },
+        {
+            "Key": "Course_Create",
+            "Value": "New course"
+        },
+        {
+            "Key": "Course_Edit",
+            "Value": "Edit course"
+        },
+        {
             "Key": "EntityField_Title",
             "Value": "Title"
         },
         {
             "Key": "EntityField_Name",
             "Value": "Name"
+        },
+        {
+            "Key": "EntityField_Course",
+            "Value": "Course"
+        },
+        {
+            "Key": "EntityField_AttendeeType",
+            "Value": "Attendee type"
         }
     ]
 }

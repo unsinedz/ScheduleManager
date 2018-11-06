@@ -2,6 +2,11 @@ namespace ScheduleManager.Api.Metadata
 {
     public static class Constants
     {
+        public static class ApiVersions
+        {
+            public const string V1 = "V1";
+        }
+
         public static class Keys
         {
             public const string CreatePageTitle = "CreatePageTitle";
@@ -27,6 +32,8 @@ namespace ScheduleManager.Api.Metadata
             public const string Department = "department";
 
             public const string Lecturer = "lecturer";
+
+            public const string Course = "course";
         }
     }
 }

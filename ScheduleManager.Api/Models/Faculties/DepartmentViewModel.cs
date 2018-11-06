@@ -29,11 +29,11 @@ namespace ScheduleManager.Api.Models.Faculties
         [StringLength(50, ErrorMessage = "Errors_StringLength")]
         public virtual string Title { get; set; }
 
-        [RelatedApiEntitySelector("Api_Lecturer_List", ApiVersion = "V1", EntityType = Constants.EntityType.Lecturer,
+        [RelatedApiEntitySelector("Api_Lecturer_List", ApiVersion = Constants.ApiVersions.V1, EntityType = Constants.EntityType.Lecturer,
             SelectMultiple = true)]
         public virtual IList<Lecturer> Lecturers { get; set; }
 
-        [RelatedApiEntitySelector("Api_Faculty_List", ApiVersion = "V1", EntityType = Constants.EntityType.Faculty,
+        [RelatedApiEntitySelector("Api_Faculty_List", ApiVersion = Constants.ApiVersions.V1, EntityType = Constants.EntityType.Faculty,
             Required = true, ErrorMessage = "Errors_Required")]
         public virtual Faculty Faculty { get; set; }
 
@@ -68,7 +68,7 @@ namespace ScheduleManager.Api.Models.Faculties
 
             if (!object.Equals(entity.Faculty?.Id, this.Faculty?.Id) && (updated = true))
             {
-                entity.Faculty = this.Faculty.Id == null
+                entity.Faculty = this.Faculty?.Id == null
                     ? null
                     : await _facultyProvider.GetByIdAsync(this.Faculty.Id);
             }

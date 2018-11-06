@@ -16,12 +16,14 @@ namespace ScheduleManager.Api.Views
             return null;
         }
 
-        public static IHtmlContent Attribute(string name, string value)
+        public static IHtmlContent Attribute(string name, string value = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Attribute name is not specified.", nameof(name));
 
-            return new HtmlString($"{name}=\"{value}\"");
+            return string.IsNullOrEmpty(value)
+                ? new HtmlString($"{name}")
+                : new HtmlString($"{name}=\"{value}\"");
         }
 
         public static IHtmlContent ToHtml(string str) => new HtmlString(str);

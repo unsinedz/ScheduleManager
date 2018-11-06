@@ -25,7 +25,7 @@ namespace ScheduleManager.Api.Models.Faculties
         [Required(ErrorMessage = "Errors_Required")]
         public virtual string Title { get; set; }
 
-        [RelatedApiEntitySelector("Api_Department_List", ApiVersion = "V1", EntityType = Constants.EntityType.Department,
+        [RelatedApiEntitySelector("Api_Department_List", ApiVersion = Constants.ApiVersions.V1, EntityType = Constants.EntityType.Department,
             SelectMultiple = true)]
         public virtual IList<Department> Departments { get; set; }
 
