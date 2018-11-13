@@ -31,12 +31,8 @@ namespace ScheduleManager.Data
 
         private void RegisterContexts(IServiceCollection services)
         {
-            services.AddDbContext<CommonContext>(options => options.UseLazyLoadingProxies().UseMySql(_options.DatabaseConnectionString, ConfigureMySqlContext));
-            services.AddDbContext<FacultyContext>(options => options.UseLazyLoadingProxies().UseMySql(_options.DatabaseConnectionString, ConfigureMySqlContext));
-            services.AddDbContext<ScheduleContext>(options => options.UseLazyLoadingProxies().UseMySql(_options.DatabaseConnectionString, ConfigureMySqlContext));
+            services.AddDbContext<ApplicationContext>(options => options.UseLazyLoadingProxies().UseMySql(_options.DatabaseConnectionString));
         }
-
-        private void ConfigureMySqlContext(MySqlDbContextOptionsBuilder builder) => builder.MigrationsAssembly("ScheduleManager.Data");
 
         private void RegisterServices(IServiceCollection services)
         {

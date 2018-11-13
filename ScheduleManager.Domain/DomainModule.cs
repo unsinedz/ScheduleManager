@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using ScheduleManager.Domain.Common;
 using ScheduleManager.Domain.Faculties;
+using ScheduleManager.Domain.Infrastructure;
 using ScheduleManager.Domain.Scheduling;
 
 namespace ScheduleManager.Domain
@@ -26,6 +27,7 @@ namespace ScheduleManager.Domain
             services.AddTransient<DaySchedule>();
             services.AddTransient<WeekSchedule>();
             services.AddTransient<ScheduleGroup>();
+            services.AddScoped<ScopeManager>();
         }
     }
 

@@ -3,10 +3,10 @@ using ScheduleManager.Domain.Entities;
 
 namespace ScheduleManager.Data.Faculties
 {
-    public class FacultyProvider<T> : AsyncEntityProvider<T, FacultyContext>
+    public class FacultyProvider<T> : AsyncEntityProvider<T, ApplicationContext>
         where T : Entity
     {
-        public FacultyProvider(FacultyContext context) : base(context)
+        public FacultyProvider(ApplicationContext context) : base(context)
         {
         }
     }

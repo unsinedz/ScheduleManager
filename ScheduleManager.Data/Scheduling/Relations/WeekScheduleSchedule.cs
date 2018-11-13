@@ -5,12 +5,12 @@ namespace ScheduleManager.Data.Scheduling.Relations
 {
     public class WeekScheduleSchedule
     {
-        public Guid WeekScheduleId { get; set; }
+        public virtual Guid WeekScheduleId { get; set; }
 
-        public WeekSchedule WeekSchedule { get; set; }
+        public virtual WeekSchedule WeekSchedule { get; set; }
 
-        public Guid ScheduleGroupId { get; set; }
+        public virtual Guid ScheduleGroupId { get; set; }
 
-        public ScheduleGroup ScheduleGroup { get; set; }
+        public virtual ScheduleGroup ScheduleGroup { get; set; }
     }
 }

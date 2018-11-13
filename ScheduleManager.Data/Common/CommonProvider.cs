@@ -3,10 +3,10 @@ using ScheduleManager.Domain.Entities;
 
 namespace ScheduleManager.Data.Common
 {
-    public class CommonProvider<T> : AsyncEntityProvider<T, CommonContext>
+    public class CommonProvider<T> : AsyncEntityProvider<T, ApplicationContext>
         where T : Entity
     {
-        public CommonProvider(CommonContext context) : base(context)
+        public CommonProvider(ApplicationContext context) : base(context)
         {
         }
     }
