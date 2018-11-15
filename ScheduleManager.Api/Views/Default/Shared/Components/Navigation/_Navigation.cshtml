@@ -23,9 +23,9 @@
             <ul>
                 <li><a href="@Url.Action("List", "Attendee")">@Texts["Attendees"]</a></li>
                 <li><a href="@Url.Action("List", "Room")">@Texts["Rooms"]</a></li>
-                <li><a href="#!">@Texts["Subjects"]</a></li>
+                <li><a href="@Url.Action("List", "Subject")">@Texts["Subjects"]</a></li>
                 <li><a href="@Url.Action("List", "Course")">@Texts["Courses"]</a></li>
-                <li><a href="#!">@Texts["Timetable"]</a></li>
+                <li><a href="@Url.Action("List", "Timetable")">@Texts["Timetable"]</a></li>
             </ul>
         </div>
     </li>
@@ -33,10 +33,10 @@
         <div class="collapsible-header"><i class="material-icons">web</i>@Texts["Schedule"]</div>
         <div class="collapsible-body">
             <ul>
-                <li><a href="#!">@Texts["Activities"]</a></li>
-                <li><a href="#!">@Texts["DailySchedule"]</a></li>
-                <li><a href="#!">@Texts["WeekSchedule"]</a></li>
-                <li><a href="#!">@Texts["ScheduleGroup"]</a></li>
+                <li><a href="@Url.Action("List", "Activities")">@Texts["Activities"]</a></li>
+                <li><a href="@Url.Action("List", "DailySchedule")">@Texts["DailySchedule"]</a></li>
+                <li><a href="@Url.Action("List", "WeekSchedule")">@Texts["WeekSchedule"]</a></li>
+                <li><a href="@Url.Action("List", "ScheduleGroup")">@Texts["ScheduleGroup"]</a></li>
             </ul>
         </div>
     </li>

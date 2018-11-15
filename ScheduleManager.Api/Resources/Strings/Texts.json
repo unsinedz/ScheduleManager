@@ -86,6 +86,10 @@
             "Value": "Courses"
         },
         {
+            "Key": "List_Subjects",
+            "Value": "Subjects"
+        },
+        {
             "Key": "Faculty_Title",
             "Value": "Title"
         },
@@ -152,6 +156,18 @@
         {
             "Key": "Room_Edit",
             "Value": "Edit room"
+        },
+        {
+            "Key": "Subject_Title",
+            "Value": "Title"
+        },
+        {
+            "Key": "Subject_Create",
+            "Value": "New subject"
+        },
+        {
+            "Key": "Subject_Edit",
+            "Value": "Edit subject"
         },
         {
             "Key": "EntityField_Title",
