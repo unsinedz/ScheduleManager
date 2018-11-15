@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ScheduleManager.Api.Models;
 using ScheduleManager.Api.Models.Editors;
-using ScheduleManager.Domain.DependencyInjection;
 using ScheduleManager.Domain.Entities;
 
 namespace ScheduleManager.Api.Controllers
@@ -127,10 +126,7 @@ namespace ScheduleManager.Api.Controllers
             return true;
         }
 
-        protected virtual TItemViewModel CreateEmptyModel()
-        {
-            return TypeResolver.Resolve<TItemViewModel>();
-        }
+        protected virtual TItemViewModel CreateEmptyModel() => Activator.CreateInstance<TItemViewModel>();
 
         protected virtual TItemViewModel CreateItemViewModel(TItem item)
         {

@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using ScheduleManager.Api.Serialization.Json;
 using ScheduleManager.Authentication;
 using ScheduleManager.Data;
 using ScheduleManager.Domain;
@@ -70,17 +65,9 @@ namespace ScheduleManager.Api
                 .ConfigureJson()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddRazorOptions(RazorConfiguration.ConfigureRazor)
-                .AddControllersAsServices()
-                .AddDataAnnotationsLocalization(options =>
-                {
-                    options.DataAnnotationLocalizerProvider = (_, __) =>
-                        TypeResolver.Current.GetService<StringLocalizationManager>();
-                })
-                .AddMvcLocalization(options =>
-                {
-                    options.DataAnnotationLocalizerProvider = (_, __) =>
-                        TypeResolver.Current.GetService<StringLocalizationManager>();
-                });
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization()
+                .AddMvcLocalization();
 
             services.ConfigureMvc()
                 .ConfigureIIS()

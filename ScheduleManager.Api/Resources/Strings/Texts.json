@@ -82,6 +82,10 @@
             "Value": "Courses"
         },
         {
+            "Key": "List_Rooms",
+            "Value": "Courses"
+        },
+        {
             "Key": "Faculty_Title",
             "Value": "Title"
         },
@@ -136,6 +140,18 @@
         {
             "Key": "Course_Edit",
             "Value": "Edit course"
+        },
+        {
+            "Key": "Room_Title",
+            "Value": "Title"
+        },
+        {
+            "Key": "Room_Create",
+            "Value": "New room"
+        },
+        {
+            "Key": "Room_Edit",
+            "Value": "Edit room"
         },
         {
             "Key": "EntityField_Title",

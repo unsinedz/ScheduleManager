@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using ScheduleManager.Domain;
 using ScheduleManager.Localizations.Data.Strings;
 
@@ -8,7 +9,7 @@ namespace ScheduleManager.Localizations
     {
         public void RegisterDependencies(IServiceCollection services)
         {
-            services.AddSingleton<StringLocalizationManager>();
+            services.AddSingleton<IStringLocalizer, StringLocalizationManager>();
         }
     }
 

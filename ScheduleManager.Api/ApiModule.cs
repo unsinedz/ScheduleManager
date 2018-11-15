@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
+using ScheduleManager.Api.Localization;
 using ScheduleManager.Api.Localization.Adapters;
 using ScheduleManager.Api.Metadata;
 using ScheduleManager.Api.Serialization.Json;
@@ -20,6 +22,7 @@ namespace ScheduleManager.Api
         public void RegisterDependencies(IServiceCollection services)
         {
             services.AddSingleton<IViewLocalizer, ViewLocalizationAdapter>();
+            services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
         }
 
         public void ConfigureMvc(MvcOptions options)

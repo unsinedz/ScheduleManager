@@ -19,19 +19,11 @@ namespace ScheduleManager.Api.Localization.Adapters
         LocalizedHtmlString IHtmlLocalizer.this[string name, params object[] arguments] =>
             new LocalizedHtmlString(name, WebUtility.HtmlDecode(string.Format(this.Localize(name, name), arguments)));
 
-        public LocalizedString GetString(string name)
-        {
-            return new LocalizedString(name, this.Localize(name, name));
-        }
+        public LocalizedString GetString(string name) => new LocalizedString(name, this.Localize(name, name));
 
         public LocalizedString GetString(string name, params object[] arguments)
-        {
-            return new LocalizedString(name, string.Format(this.Localize(name, name), arguments));
-        }
+            => new LocalizedString(name, string.Format(this.Localize(name, name), arguments));
 
-        IHtmlLocalizer IHtmlLocalizer.WithCulture(CultureInfo culture)
-        {
-            return (IHtmlLocalizer)this.WithCulture(culture);
-        }
+        IHtmlLocalizer IHtmlLocalizer.WithCulture(CultureInfo culture) => (IHtmlLocalizer)this.WithCulture(culture);
     }
 }
