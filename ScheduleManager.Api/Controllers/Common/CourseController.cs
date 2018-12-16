@@ -19,9 +19,6 @@ namespace ScheduleManager.Api.Controllers
             return items.OrderBy(x => x.Title);
         }
 
-        protected override CourseViewModel CreateEmptyModel() =>
-            new CourseViewModel();
-
         protected override string GetListTitle() => "Courses";
     }
 }

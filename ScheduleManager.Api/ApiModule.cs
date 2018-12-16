@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ using Newtonsoft.Json;
 using ScheduleManager.Api.Localization;
 using ScheduleManager.Api.Localization.Adapters;
 using ScheduleManager.Api.Metadata;
+using ScheduleManager.Api.Metadata.Attributes.Validation;
 using ScheduleManager.Api.Serialization.Json;
 using ScheduleManager.Domain;
 
@@ -23,6 +25,7 @@ namespace ScheduleManager.Api
         {
             services.AddSingleton<IViewLocalizer, ViewLocalizationAdapter>();
             services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
+            services.AddSingleton<IValidationAttributeAdapterProvider, DefaultValidationAttributeAdapterProvider>();
         }
 
         public void ConfigureMvc(MvcOptions options)

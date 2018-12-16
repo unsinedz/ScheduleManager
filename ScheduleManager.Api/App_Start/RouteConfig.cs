@@ -17,6 +17,7 @@ namespace ScheduleManager.Api
             builder.AddControllerRoute("Course", "courses/{action}", "List");
             builder.AddControllerRoute("Room", "rooms/{action}", "List");
             builder.AddControllerRoute("Subject", "subjects/{action}", "List");
+            builder.AddControllerRoute("TimePeriod", "timeperiods/{action}", "List");
             ConfigureApiV1Routes(builder);
         }
 

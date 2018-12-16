@@ -14,6 +14,10 @@
             "Value": "Use no more than {1} symbols"
         },
         {
+            "Key": "Errors_PropertyMustBeGreaterThanProperty",
+            "Value": "{0} must be greater than {1}."
+        },
+        {
             "Key": "Edit",
             "Value": "Edit"
         },
@@ -28,6 +32,10 @@
         {
             "Key": "Save",
             "Value": "Save"
+        },
+        {
+            "Key": "TimePeriod",
+            "Value": "Time period"
         },
         {
             "Key": "DailySchedule",
@@ -84,6 +92,10 @@
         {
             "Key": "List_Rooms",
             "Value": "Courses"
+        },
+        {
+            "Key": "List_TimePeriods",
+            "Value": "Time periods"
         },
         {
             "Key": "List_Subjects",
@@ -170,6 +182,22 @@
             "Value": "Edit subject"
         },
         {
+            "Key": "TimePeriod_StartTime",
+            "Value": "Start time"
+        },
+        {
+            "Key": "TimePeriod_EndTime",
+            "Value": "End time"
+        },
+        {
+            "Key": "TimePeriod_Create",
+            "Value": "New time period"
+        },
+        {
+            "Key": "TimePeriod_Edit",
+            "Value": "Edit time period"
+        },
+        {
             "Key": "EntityField_Title",
             "Value": "Title"
         },
@@ -184,6 +212,14 @@
         {
             "Key": "EntityField_AttendeeType",
             "Value": "Attendee type"
+        },
+        {
+            "Key": "EntityField_StartTime",
+            "Value": "Start time"
+        },
+        {
+            "Key": "EntityField_EndTime",
+            "Value": "End time"
         }
     ]
 }

@@ -19,8 +19,6 @@ namespace ScheduleManager.Api.Controllers
             return items.OrderBy(x => x.Title);
         }
 
-        protected override RoomViewModel CreateEmptyModel() => new RoomViewModel();
-
         protected override string GetListTitle() => "Rooms";
     }
 }

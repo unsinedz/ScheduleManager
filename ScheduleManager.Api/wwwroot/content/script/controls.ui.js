@@ -1,6 +1,5 @@
 (function ($) {
     var Align = (function () {
-        var self = this;
         var applyBlockCenterY = function (selector) {
             var $e = $(selector);
             if (!$e.length)
@@ -29,9 +28,6 @@
     })();
 
     Align.applyBlockCenterY('.vcenter-y');
-
-    $.validator.setDefaults({
-    });
 
     if (Framework && Framework.Navigation) {
         $(document).ready(function () {
