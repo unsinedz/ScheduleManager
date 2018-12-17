@@ -234,12 +234,22 @@ Framework.Autocomplete = (function ($) {
         };
     }
 
+    function addTypeMappers(typeNames, autocompleteMapper, chipMapper, chipSuffix) {
+        if (typeNames && typeNames.length) {
+            $.each(typeNames, function () {
+                if (this !== undefined)
+                    addTypeMapper(this, autocompleteMapper, chipMapper, chipSuffix);
+            });
+        }
+    }
+
     $(function () {
         init('[data-autocomplete="true"]');
     });
 
     return {
         init: init,
-        addTypeMapper: addTypeMapper
+        addTypeMapper: addTypeMapper,
+        addTypeMappers: addTypeMappers
     };
 })(jQuery);

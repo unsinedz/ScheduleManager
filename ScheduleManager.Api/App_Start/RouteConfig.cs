@@ -18,6 +18,7 @@ namespace ScheduleManager.Api
             builder.AddControllerRoute("Room", "rooms/{action}", "List");
             builder.AddControllerRoute("Subject", "subjects/{action}", "List");
             builder.AddControllerRoute("TimePeriod", "timeperiods/{action}", "List");
+            builder.AddControllerRoute("Activity", "activities/{action}", "List");
             ConfigureApiV1Routes(builder);
         }
 
@@ -27,7 +28,12 @@ namespace ScheduleManager.Api
             builder.AddApiRoutes("Department", $"api/{apiVersion}/departments", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("Faculty", $"api/{apiVersion}/faculties", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("Lecturer", $"api/{apiVersion}/lecturers", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("Attendee", $"api/{apiVersion}/attendees", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("Course", $"api/{apiVersion}/courses", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("Room", $"api/{apiVersion}/rooms", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("Subject", $"api/{apiVersion}/subjects", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("TimePeriod", $"api/{apiVersion}/timeperiods", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("Activity", $"api/{apiVersion}/activities", apiVersion, hasList: true, hasSingle: true);
         }
 
         public static void AddControllerRoute(this IRouteBuilder builder, string controllerName, string url, string defaultActionName)

@@ -23,6 +23,7 @@ namespace ScheduleManager.Api.Models.Faculties
 
         [Display(Name = "Lecturer_Name")]
         [Required(ErrorMessage = "Errors_Required")]
+        [StringLength(50, ErrorMessage = "Errors_StringLength")]
         public virtual string Name { get; set; }
 
         [RelatedApiEntitySelector("Api_Department_List", ApiVersion = Constants.ApiVersions.V1, EntityType = Constants.EntityType.Department,

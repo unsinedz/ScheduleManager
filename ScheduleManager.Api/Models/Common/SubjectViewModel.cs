@@ -18,6 +18,7 @@ namespace ScheduleManager.Api.Models.Common
 
         [Display(Name = "Subject_Title")]
         [Required(ErrorMessage = "Errors_Required")]
+        [StringLength(50, ErrorMessage = "Errors_StringLength")]
         public string Title { get; set; }
 
         public override bool Editable => true;

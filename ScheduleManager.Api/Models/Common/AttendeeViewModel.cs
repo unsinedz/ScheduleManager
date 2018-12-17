@@ -30,6 +30,7 @@ namespace ScheduleManager.Api.Models.Common
 
         [Display(Name = "Attendee_Name")]
         [Required(ErrorMessage = "Errors_Required")]
+        [StringLength(50, ErrorMessage = "Errors_StringLength")]
         public string Name { get; set; }
 
         [Display(Name = "Attendee_Course")]

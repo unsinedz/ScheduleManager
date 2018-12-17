@@ -1,7 +1,7 @@
 var Framework = Framework || {};
 (function () {
     if (Framework.Autocomplete) {
-        Framework.Autocomplete.addTypeMapper('faculty', function (data) {
+        Framework.Autocomplete.addTypeMappers(['faculty', 'department', 'course', 'room', 'subject'], function (data) {
             var autocompleteData = {};
             if (Array.isArray(data)) {
                 $.each(data, function () {
@@ -13,14 +13,14 @@ var Framework = Framework || {};
                 return { key: data.title, data: data };
 
             return autocompleteData;
-        }, function (faculty) {
+        }, function (entity) {
             return {
-                title: faculty.title,
-                value: faculty.id
+                title: entity.title,
+                value: entity.id
             };
         }, '.Id');
 
-        Framework.Autocomplete.addTypeMapper('lecturer', function (data) {
+        Framework.Autocomplete.addTypeMappers(['lecturer', 'attendee'], function (data) {
             var autocompleteData = {};
             if (Array.isArray(data)) {
                 $.each(data, function () {
@@ -36,44 +36,6 @@ var Framework = Framework || {};
             return {
                 title: lecturer.name,
                 value: lecturer.id
-            };
-        }, '.Id');
-
-        Framework.Autocomplete.addTypeMapper('department', function (data) {
-            var autocompleteData = {};
-            if (Array.isArray(data)) {
-                $.each(data, function () {
-                    if (this.title)
-                        autocompleteData[this.title] = this;
-                });
-            }
-            else if (data)
-                return { key: data.title, data: data };
-
-            return autocompleteData;
-        }, function (department) {
-            return {
-                title: department.title,
-                value: department.id
-            };
-        }, '.Id');
-
-        Framework.Autocomplete.addTypeMapper('course', function (data) {
-            var autocompleteData = {};
-            if (Array.isArray(data)) {
-                $.each(data, function () {
-                    if (this.title)
-                        autocompleteData[this.title] = this;
-                });
-            }
-            else if (data)
-                return { key: data.title, data: data };
-
-            return autocompleteData;
-        }, function (course) {
-            return {
-                title: course.title,
-                value: course.id
             };
         }, '.Id');
 

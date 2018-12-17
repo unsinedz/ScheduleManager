@@ -34,6 +34,14 @@ namespace ScheduleManager.Api.Metadata
             public const string Lecturer = "lecturer";
 
             public const string Course = "course";
+
+            public const string TimePeriod = "timeperiod";
+
+            public const string Room = "room";
+
+            public const string Subject = "subject";
+
+            public const string Attendee = "attendee";
         }
     }
 }

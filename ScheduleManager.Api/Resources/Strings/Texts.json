@@ -102,6 +102,10 @@
             "Value": "Subjects"
         },
         {
+            "Key": "List_Activities",
+            "Value": "Activities"
+        },
+        {
             "Key": "Faculty_Title",
             "Value": "Title"
         },
@@ -180,6 +184,38 @@
         {
             "Key": "Subject_Edit",
             "Value": "Edit subject"
+        },
+        {
+            "Key": "Activity_Title",
+            "Value": "Activity"
+        },
+        {
+            "Key": "Activity_Create",
+            "Value": "New activity"
+        },
+        {
+            "Key": "Activity_Edit",
+            "Value": "Edit activity"
+        },
+        {
+            "Key": "Activity_TimePeriod",
+            "Value": "Time period"
+        },
+        {
+            "Key": "Activity_Room",
+            "Value": "Room"
+        },
+        {
+            "Key": "Activity_Subject",
+            "Value": "Subject"
+        },
+        {
+            "Key": "Activity_Lecturer",
+            "Value": "Lecturer"
+        },
+        {
+            "Key": "Activity_Attendees",
+            "Value": "Attendees"
         },
         {
             "Key": "TimePeriod_StartTime",

@@ -20,7 +20,7 @@ namespace ScheduleManager.Api.Models.Faculties
         private readonly IAsyncProvider<Lecturer> _lecturerProvider;
 
         [HiddenInput(DisplayValue = false)]
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         string IPreviewableItemModel.Id => this.Id.ToString();
 
@@ -73,7 +73,7 @@ namespace ScheduleManager.Api.Models.Faculties
                     : await _facultyProvider.GetByIdAsync(this.Faculty.Id);
             }
 
-            updated = updated | await TryUpdateLecturers(entity);
+            updated |= await TryUpdateLecturers(entity);
             return updated;
         }
 

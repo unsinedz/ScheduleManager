@@ -12,17 +12,19 @@ using ScheduleManager.Api.Metadata;
 
 namespace ScheduleManager.Api.Models.Faculties
 {
+    [PageTitles(createPageTitleKey: "Faculty_Create", editPageTitleKey: "Faculty_Edit")]
     public class FacultyViewModel : ItemViewModel<Faculty>, IPreviewableItemModel
     {
         private readonly IAsyncProvider<Department> _departmentProvider;
 
         [HiddenInput(DisplayValue = false)]
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         string IPreviewableItemModel.Id => this.Id.ToString();
 
         [Display(Name = "Faculty_Title")]
         [Required(ErrorMessage = "Errors_Required")]
+        [StringLength(50, ErrorMessage = "Errors_StringLength")]
         public virtual string Title { get; set; }
 
         [RelatedApiEntitySelector("Api_Department_List", ApiVersion = Constants.ApiVersions.V1, EntityType = Constants.EntityType.Department,
