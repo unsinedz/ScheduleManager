@@ -76,5 +76,31 @@ var Framework = Framework || {};
                 value: course.id
             };
         }, '.Id');
+
+        function buildTimePeriodName(startTime, endTime) {
+            var format = 'HH:mm';
+            var start = moment.utc(startTime);
+            var end = moment.utc(endTime);
+            return start.format(format) + ' - ' + end.format(format);
+        }
+
+        Framework.Autocomplete.addTypeMapper('timeperiod', function (data) {
+            var autocompleteData = {};
+            if (Array.isArray(data)) {
+                $.each(data, function () {
+                    if (this.start && this.end)
+                        autocompleteData[buildTimePeriodName(this.start, this.end)] = this;
+                });
+            }
+            else if (data)
+                return { key: buildTimePeriodName(data.start, data.end), data: data };
+
+            return autocompleteData;
+        }, function (timePeriod) {
+            return {
+                title: buildTimePeriodName(timePeriod.start, timePeriod.end),
+                value: timePeriod.id
+            };
+        }, '.Id');
     }
 })();
