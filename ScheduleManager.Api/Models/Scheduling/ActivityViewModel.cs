@@ -13,7 +13,7 @@ using ScheduleManager.Domain.Scheduling;
 
 namespace ScheduleManager.Api.Models.Scheduling
 {
-    [PageTitles(createPageTitleKey: "Attendee_Create", editPageTitleKey: "Attendee_Edit")]
+    [PageTitles(createPageTitleKey: "Activity_Create", editPageTitleKey: "Activity_Edit")]
     public class ActivityViewModel : ItemViewModel<Activity>, IPreviewableItemModel
     {
         private readonly IAsyncProvider<TimePeriod> _timePeriodProvider;
