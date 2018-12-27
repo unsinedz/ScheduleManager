@@ -1,7 +1,7 @@
 var Framework = Framework || {};
 (function () {
     if (Framework.Autocomplete) {
-        Framework.Autocomplete.addTypeMappers(['faculty', 'department', 'course', 'room', 'subject'], function (data) {
+        Framework.Autocomplete.addTypeMappers(['faculty', 'department', 'course', 'room', 'subject', 'activity'], function (data) {
             var autocompleteData = {};
             if (Array.isArray(data)) {
                 $.each(data, function () {
