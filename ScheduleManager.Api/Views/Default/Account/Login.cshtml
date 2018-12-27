@@ -22,6 +22,9 @@
                                 @Html.ValidationMessageFor(x => x.Password, "", new { @class = "helper-text" })
                             </div>
                             <div class="input-field">
+                                @Html.ValidationSummary(true, "", new { @class = "helper-text" })
+                            </div>
+                            <div class="input-field">
                                 @Html.EditorFor(x => x.RememberMe)
                             </div>
                             <div class="center-align">

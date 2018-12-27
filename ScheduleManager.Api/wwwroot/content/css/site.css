@@ -43,3 +43,7 @@ h1, h2, h3, h4, h5 {
     top: -26px;
     font-size: 0.8rem;
 }
+
+.validation-summary-errors li {
+    color: #F44336;
+}
