@@ -4,6 +4,12 @@
         return metadata.ShowForEdit
             && (!string.IsNullOrEmpty(metadata.TemplateHint) || !metadata.IsComplexType);
     };
+    Func<ModelMetadata, bool> shouldAddAsterisk = metadata =>
+    {
+        return !metadata.IsReadOnly && (metadata.IsRequired
+            || (metadata.AdditionalValues.TryGetValue(Constants.Keys.RelatedEntityRequired, out var required)
+                && true.Equals(required)));
+    };
 }
 @if (ViewData.TemplateInfo.TemplateDepth > 1)
 {
@@ -26,7 +32,8 @@ else
         }
         else
         {
-            var labelHtml = Html.Label(prop.PropertyName);
+            var asterisk = shouldAddAsterisk(prop) ? "*" : string.Empty;
+            var labelHtml = Html.Label(prop.PropertyName, $"{prop.GetDisplayName()}{asterisk}");
             <div class="input-field">
                 @Html.Editor(prop.PropertyName, new { htmlAttributes = new { placeholder = Html.DisplayName(prop.PropertyName) } }) @Html.ValidationMessage(prop.PropertyName, new { @class = "helper-text" })
                 @if (!string.IsNullOrEmpty(labelHtml.ToString()))
