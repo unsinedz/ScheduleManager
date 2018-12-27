@@ -1,8 +1,10 @@
-@if (@Context.User.Identity.IsAuthenticated)
-{
-    <h3>@string.Format(Texts["HomePage_Greeting"].Value, Context.User.Identity.Name)</h3>
-}
-else
-{
-    <h3>Please, authorize first.</h3>
-}
+<div class="container">
+    @if (@Context.User.Identity.IsAuthenticated)
+    {
+        <h3>@string.Format(Texts["HomePage_Greeting"].Value, Context.User.Identity.Name)</h3>
+    }
+    else
+    {
+        <h3>Please, authorize first.</h3>
+    }
+</div>
