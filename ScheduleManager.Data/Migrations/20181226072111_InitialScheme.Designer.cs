@@ -9,7 +9,7 @@ using ScheduleManager.Data;
 namespace ScheduleManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20181113220437_InitialScheme")]
+    [Migration("20181226072111_InitialScheme")]
     partial class InitialScheme
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,6 +18,19 @@ namespace ScheduleManager.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ScheduleManager.Data.Scheduling.Relations.ActivityAttendee", b =>
+                {
+                    b.Property<Guid>("ActivityId");
+
+                    b.Property<Guid>("AttendeeId");
+
+                    b.HasKey("ActivityId", "AttendeeId");
+
+                    b.HasIndex("AttendeeId");
+
+                    b.ToTable("Activity_Attendee");
+                });
 
             modelBuilder.Entity("ScheduleManager.Data.Scheduling.Relations.ActivityDaySchedule", b =>
                 {
@@ -69,8 +82,6 @@ namespace ScheduleManager.Data.Migrations
 
                     b.Property<Guid?>("CourseId");
 
-                    b.Property<Guid?>("FK_Faculty_Attendee");
-
                     b.Property<Guid?>("FacultyId");
 
                     b.Property<string>("Name")
@@ -83,7 +94,7 @@ namespace ScheduleManager.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("FK_Faculty_Attendee");
+                    b.HasIndex("FacultyId");
 
                     b.ToTable("Attendees");
                 });
@@ -274,6 +285,21 @@ namespace ScheduleManager.Data.Migrations
                     b.ToTable("WeekScheduling");
                 });
 
+            modelBuilder.Entity("ScheduleManager.Data.Scheduling.Relations.ActivityAttendee", b =>
+                {
+                    b.HasOne("ScheduleManager.Domain.Scheduling.Activity", "Activity")
+                        .WithMany()
+                        .HasForeignKey("ActivityId")
+                        .HasConstraintName("FK__Activity__Activity_Attendee")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ScheduleManager.Domain.Common.Attendee", "Attendee")
+                        .WithMany()
+                        .HasForeignKey("AttendeeId")
+                        .HasConstraintName("FK__Attendee__Activity_Attendee")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("ScheduleManager.Data.Scheduling.Relations.ActivityDaySchedule", b =>
                 {
                     b.HasOne("ScheduleManager.Domain.Scheduling.Activity", "Activity")
@@ -333,7 +359,8 @@ namespace ScheduleManager.Data.Migrations
 
                     b.HasOne("ScheduleManager.Domain.Faculties.Faculty", "Faculty")
                         .WithMany()
-                        .HasForeignKey("FK_Faculty_Attendee")
+                        .HasForeignKey("FacultyId")
+                        .HasConstraintName("FK_Faculty_Attendee")
                         .OnDelete(DeleteBehavior.SetNull);
                 });
 

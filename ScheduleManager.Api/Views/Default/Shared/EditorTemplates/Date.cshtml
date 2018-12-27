@@ -1,0 +1,7 @@
+@model DateTime?
+@{
+    var inputValue = Model.HasValue
+        ? Model.Value.ToString("d")
+        : null;
+}
+@Html.TextBox("", inputValue, new { @class = "text-box single-line datepicker", placeholder = Html.DisplayName("") })

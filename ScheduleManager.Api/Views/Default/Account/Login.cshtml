@@ -8,16 +8,18 @@
             <div class="col s4 offset-s4 card z-depth-3">
                 <div>
                     <h2 class="center-align">Login</h2>
-                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-wrapped" }))
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-wrapper" }))
                     {
                         <div class="row">
                             <div class="input-field">
                                 @Html.AttrEditorFor(x => x.UserName, new { placeholder = "Username", @class = "validate" })
                                 @Html.LabelFor(x => x.UserName)
+                                @Html.ValidationMessageFor(x => x.UserName, "", new { @class = "helper-text" })
                             </div>
                             <div class="input-field">
                                 @Html.AttrEditorFor(x => x.Password, new { placeholder = "Password", @class = "validate" })
                                 @Html.LabelFor(x => x.Password)
+                                @Html.ValidationMessageFor(x => x.Password, "", new { @class = "helper-text" })
                             </div>
                             <div class="input-field">
                                 @Html.EditorFor(x => x.RememberMe)

@@ -28,6 +28,8 @@
         @RenderBody()
     </div>
 
+    @Html.AntiForgeryToken()
+
     <environment names="Development">
         <script src="~/content/script/lib/jquery-3.3.1.js"></script>
         <script src="~/content/script/lib/jquery.validate-1.17.0.min.js"></script>

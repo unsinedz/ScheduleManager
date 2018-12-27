@@ -1,6 +1,6 @@
 @if (@Context.User.Identity.IsAuthenticated)
 {
-    <h3>Hello, @Context.User.Identity.Name</h3>
+    <h3>@string.Format(Texts["HomePage_Greeting"].Value, Context.User.Identity.Name)</h3>
 }
 else
 {

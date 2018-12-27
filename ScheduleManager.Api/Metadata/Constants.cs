@@ -42,6 +42,8 @@ namespace ScheduleManager.Api.Metadata
             public const string Subject = "subject";
 
             public const string Attendee = "attendee";
+
+            public const string Activity = "activity";
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,7 +51,7 @@ namespace ScheduleManager.Api
                     options.SupportedCultures = new[]
                     {
                         new CultureInfo("en-US"),
-                        new CultureInfo("uk")
+                        new CultureInfo("ru-RU")
                     };
                     options.SupportedUICultures = options.SupportedCultures;
                     options.DefaultRequestCulture = new RequestCulture("en-US");
@@ -89,7 +90,8 @@ namespace ScheduleManager.Api
                 options.DefaultCulture = new CultureInfo("en-US");
                 options.Providers = new[]
                 {
-                    new JsonStringProvider(Environment.ContentRootFileProvider.GetFileInfo(@"Resources\Strings\Texts.json").PhysicalPath)
+                    new JsonStringProvider(Environment.ContentRootFileProvider.GetFileInfo(@"Resources\Strings\Texts.json").PhysicalPath),
+                    new JsonStringProvider(Environment.ContentRootFileProvider.GetFileInfo(@"Resources\Strings\Texts.ru.json").PhysicalPath)
                 };
             });
         }

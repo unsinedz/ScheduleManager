@@ -2,6 +2,10 @@
     "CultureCode": "en",
     "Localizations": [
         {
+            "Key": "HomePage_Greeting",
+            "Value": "Hello, {0}"
+        },
+        {
             "Key": "Errors_Required",
             "Value": "{0} is mandatory"
         },
@@ -106,6 +110,10 @@
             "Value": "Activities"
         },
         {
+            "Key": "List_DayScheduling",
+            "Value": "Day scheduling"
+        },
+        {
             "Key": "Faculty_Title",
             "Value": "Title"
         },
@@ -190,14 +198,6 @@
             "Value": "Activity"
         },
         {
-            "Key": "Activity_Create",
-            "Value": "New activity"
-        },
-        {
-            "Key": "Activity_Edit",
-            "Value": "Edit activity"
-        },
-        {
             "Key": "Activity_TimePeriod",
             "Value": "Time period"
         },
@@ -216,6 +216,34 @@
         {
             "Key": "Activity_Attendees",
             "Value": "Attendees"
+        },
+        {
+            "Key": "Activity_Create",
+            "Value": "New activity"
+        },
+        {
+            "Key": "Activity_Edit",
+            "Value": "Edit activity"
+        },
+        {
+            "Key": "DaySchedule_Create",
+            "Value": "New day schedule"
+        },
+        {
+            "Key": "DaySchedule_Edit",
+            "Value": "Edit day schedule"
+        },
+        {
+            "Key": "DaySchedule_DedicatedDate",
+            "Value": "Dedicated date"
+        },
+        {
+            "Key": "DaySchedule_DayOfWeek",
+            "Value": "Day of week"
+        },
+        {
+            "Key": "DaySchedule_Activities",
+            "Value": "Activities"
         },
         {
             "Key": "TimePeriod_StartTime",
@@ -256,6 +284,18 @@
         {
             "Key": "EntityField_EndTime",
             "Value": "End time"
+        },
+        {
+            "Key": "EntityField_DedicatedDate",
+            "Value": "Dedicated date"
+        },
+        {
+            "Key": "EntityField_DayOfWeek",
+            "Value": "Day of week"
+        },
+        {
+            "Key": "EntityField_Activities",
+            "Value": "Activities"
         }
     ]
 }

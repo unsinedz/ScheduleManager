@@ -20,14 +20,11 @@ namespace ScheduleManager.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(string returnUrl = null)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
                 return LocalRedirect(returnUrl ?? "/");
-
-            var user = GetTemplateUser();
-            if (await _userManager.FindByEmailAsync(user.Email) == null)
-                await _userManager.CreateAsync(user, "Qweqwe123");
 
             return View();
         }
@@ -40,6 +37,10 @@ namespace ScheduleManager.Api.Controllers
 
             if (!ModelState.IsValid)
                 return View(model);
+
+            var user = GetTemplateUser();
+            if (await _userManager.FindByEmailAsync(user.Email) == null)
+                await _userManager.CreateAsync(user, "Qweqwe123");
 
             if (await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, true) == I.SignInResult.Success)
                 return LocalRedirect(returnUrl ?? "/");

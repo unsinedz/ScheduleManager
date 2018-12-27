@@ -9,8 +9,8 @@ using ScheduleManager.Authentication.Storage;
 namespace ScheduleManager.Authentication.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20181113220756_Identity")]
-    partial class Identity
+    [Migration("20181226072154_InitialScheme")]
+    partial class InitialScheme
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -39,6 +39,7 @@ namespace ScheduleManager.Api.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [ActionName("Create")]
         public virtual async Task<IActionResult> CreatePost()
         {
@@ -72,6 +73,7 @@ namespace ScheduleManager.Api.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [ActionName("Edit")]
         public virtual async Task<IActionResult> EditPost(Guid id)
         {
@@ -92,6 +94,7 @@ namespace ScheduleManager.Api.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> Delete(Guid id)
         {
             if (id == Guid.Empty)
@@ -115,7 +118,7 @@ namespace ScheduleManager.Api.Controllers
             if (create)
                 item.Id = Guid.NewGuid();
 
-            if (await model.TryUpdateEntityProperties(item))
+            if (await model.TryUpdateEntityProperties(item) || create)
             {
                 var action = create
                     ? ItemProvider.CreateAsync(item)

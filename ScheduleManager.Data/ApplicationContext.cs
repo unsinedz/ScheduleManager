@@ -101,7 +101,7 @@ namespace ScheduleManager.Data
                     .HasForeignKey("FacultyId")
                     .OnDelete(DeleteBehavior.SetNull)
                     .IsRequired(false)
-                    .HasForeignKey("FK_Faculty_Attendee");
+                    .HasConstraintName("FK_Faculty_Attendee");
             }
 
             public virtual void BuildCourse(EntityTypeBuilder<Course> builder)
@@ -152,6 +152,24 @@ namespace ScheduleManager.Data
                 modelBuilder.Entity<ActivityDaySchedule>(BuildActivityToDayScheduleRelation);
                 modelBuilder.Entity<DayScheduleWeekSchedule>(BuildDayScheduleToWeekScheduleRelation);
                 modelBuilder.Entity<WeekScheduleSchedule>(BuildWeekScheduleToScheduleRelation);
+                modelBuilder.Entity<ActivityAttendee>(BuildActivityToAttendeeRelation);
+            }
+
+            public virtual void BuildActivityToAttendeeRelation(EntityTypeBuilder<ActivityAttendee> builder)
+            {
+                builder.ToTable("Activity_Attendee");
+                builder.HasKey(x => new { x.ActivityId, x.AttendeeId });
+                builder.HasOne(x => x.Activity)
+                    .WithMany()
+                    .HasForeignKey(x => x.ActivityId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK__Activity__Activity_Attendee");
+
+                builder.HasOne(x => x.Attendee)
+                    .WithMany()
+                    .HasForeignKey(x => x.AttendeeId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK__Attendee__Activity_Attendee");
             }
 
             public virtual void BuildActivityToDayScheduleRelation(EntityTypeBuilder<ActivityDaySchedule> builder)

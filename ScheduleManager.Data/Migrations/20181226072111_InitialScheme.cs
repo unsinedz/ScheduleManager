@@ -284,9 +284,8 @@ namespace ScheduleManager.Data.Migrations
                     AttendeeType = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     CourseId = table.Column<Guid>(nullable: true),
-                    FK_Faculty_Attendee = table.Column<Guid>(nullable: true),
-                    ActivityId = table.Column<Guid>(nullable: true),
-                    FacultyId = table.Column<Guid>(nullable: true)
+                    FacultyId = table.Column<Guid>(nullable: true),
+                    ActivityId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -304,11 +303,35 @@ namespace ScheduleManager.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
-                        name: "FK_Attendees_Faculties_FK_Faculty_Attendee",
-                        column: x => x.FK_Faculty_Attendee,
+                        name: "FK_Faculty_Attendee",
+                        column: x => x.FacultyId,
                         principalTable: "Faculties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Activity_Attendee",
+                columns: table => new
+                {
+                    ActivityId = table.Column<Guid>(nullable: false),
+                    AttendeeId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Activity_Attendee", x => new { x.ActivityId, x.AttendeeId });
+                    table.ForeignKey(
+                        name: "FK__Activity__Activity_Attendee",
+                        column: x => x.ActivityId,
+                        principalTable: "Activities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK__Attendee__Activity_Attendee",
+                        column: x => x.AttendeeId,
+                        principalTable: "Attendees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -337,6 +360,11 @@ namespace ScheduleManager.Data.Migrations
                 column: "TimePeriodId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Activity_Attendee_AttendeeId",
+                table: "Activity_Attendee",
+                column: "AttendeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Activity_DaySchedule_DayScheduleId",
                 table: "Activity_DaySchedule",
                 column: "DayScheduleId");
@@ -352,9 +380,9 @@ namespace ScheduleManager.Data.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Attendees_FK_Faculty_Attendee",
+                name: "IX_Attendees_FacultyId",
                 table: "Attendees",
-                column: "FK_Faculty_Attendee");
+                column: "FacultyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DaySchedule_WeekSchedule_WeekScheduleId",
@@ -390,16 +418,19 @@ namespace ScheduleManager.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Activity_DaySchedule");
+                name: "Activity_Attendee");
 
             migrationBuilder.DropTable(
-                name: "Attendees");
+                name: "Activity_DaySchedule");
 
             migrationBuilder.DropTable(
                 name: "DaySchedule_WeekSchedule");
 
             migrationBuilder.DropTable(
                 name: "WeekSchedule_ScheduleGroup");
+
+            migrationBuilder.DropTable(
+                name: "Attendees");
 
             migrationBuilder.DropTable(
                 name: "Activities");

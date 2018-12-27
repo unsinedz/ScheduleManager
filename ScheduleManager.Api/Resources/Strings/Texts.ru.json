@@ -1,0 +1,9 @@
+{
+    "CultureCode": "ru",
+    "Localizations": [
+        {
+            "Key": "HomePage_Greeting",
+            "Value": "Привет, {0}"
+        }
+    ]
+}
