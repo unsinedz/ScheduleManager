@@ -118,6 +118,14 @@
             "Value": "Title"
         },
         {
+            "Key": "Faculty_Create",
+            "Value": "New faculty"
+        },
+        {
+            "Key": "Faculty_Edit",
+            "Value": "Edit faculty"
+        },
+        {
             "Key": "Lecturer_Name",
             "Value": "Name"
         },
