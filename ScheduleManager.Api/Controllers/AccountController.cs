@@ -20,7 +20,6 @@ namespace ScheduleManager.Api.Controllers
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
         public IActionResult Login(string returnUrl = null)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
@@ -30,6 +29,7 @@ namespace ScheduleManager.Api.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
