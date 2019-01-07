@@ -52,12 +52,19 @@ namespace ScheduleManager.Localizations.Data
         }
 
         public virtual TResourceValue Localize(TResourceKey key, TResourceValue defaultValue = default(TResourceValue), CultureInfo culture = null)
+            => Localize(key, out var _, defaultValue, culture);
+
+        public virtual TResourceValue Localize(TResourceKey key, out bool resourceNotFound, TResourceValue defaultValue = default(TResourceValue), CultureInfo culture = null)
         {
             var provider = GetMatchingProvider(culture ?? this.DefaultCulture);
             var result = provider.Get(key);
             if (IsValueAbsent(result))
+            {
+                resourceNotFound = true;
                 return defaultValue;
+            }
 
+            resourceNotFound = false;
             return result;
         }
 

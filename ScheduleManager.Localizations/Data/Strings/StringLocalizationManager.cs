@@ -28,9 +28,9 @@ namespace ScheduleManager.Localizations.Data.Strings
             return this;
         }
 
-        public LocalizedString this[string name] => new LocalizedString(name, this.Localize(name, name));
+        public LocalizedString this[string name] => new LocalizedString(name, this.Localize(name, out var notFound, name), notFound);
 
         public LocalizedString this[string name, params object[] arguments] =>
-            new LocalizedString(name, string.Format(this.Localize(name, name), arguments));
+            new LocalizedString(name, string.Format(this.Localize(name, out var notFound, name), arguments), notFound);
     }
 }
