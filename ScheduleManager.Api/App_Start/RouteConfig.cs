@@ -35,6 +35,9 @@ namespace ScheduleManager.Api
             builder.AddApiRoutes("Subject", $"api/{apiVersion}/subjects", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("TimePeriod", $"api/{apiVersion}/timeperiods", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("Activity", $"api/{apiVersion}/activities", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("DayScheduling", $"api/{apiVersion}/schedule/daily", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("WeekScheduling", $"api/{apiVersion}/schedule/weekly", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("ScheduleGroup", $"api/{apiVersion}/schedule", apiVersion, hasList: true, hasSingle: true);
         }
 
         public static void AddControllerRoute(this IRouteBuilder builder, string controllerName, string url, string defaultActionName)
