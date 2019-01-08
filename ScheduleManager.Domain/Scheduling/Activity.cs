@@ -18,5 +18,7 @@ namespace ScheduleManager.Domain.Scheduling
         public virtual Lecturer Lecturer { get; set; }
 
         public virtual IList<Attendee> Attendees { get; set; }
+
+        public virtual DaySchedule DaySchedule { get; set; }
     }
 }

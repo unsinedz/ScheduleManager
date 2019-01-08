@@ -11,6 +11,9 @@ namespace ScheduleManager.Api.Metadata.Attributes.Validation
             if (attribute is SignedCompareAttribute signedCompareAttribute)
                 return new SignedCompareAttributeAdapter(signedCompareAttribute, stringLocalizer);
 
+            if (attribute is RangeAttribute rangeAttribute)
+                return new RangeAttributeAdapter(rangeAttribute, stringLocalizer);
+
             return base.GetAttributeAdapter(attribute, stringLocalizer);
         }
     }

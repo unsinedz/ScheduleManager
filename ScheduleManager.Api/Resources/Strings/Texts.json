@@ -42,7 +42,7 @@
             "Value": "Time period"
         },
         {
-            "Key": "DailySchedule",
+            "Key": "DaySchedule",
             "Value": "Daily schedule"
         },
         {
@@ -112,6 +112,14 @@
         {
             "Key": "List_DayScheduling",
             "Value": "Day scheduling"
+        },
+        {
+            "Key": "List_WeekScheduling",
+            "Value": "Week scheduling"
+        },
+        {
+            "Key": "List_ScheduleGroup",
+            "Value": "Schedule groups"
         },
         {
             "Key": "Faculty_Title",
@@ -226,6 +234,10 @@
             "Value": "Attendees"
         },
         {
+            "Key": "Activity_DaySchedule",
+            "Value": "Day schedule"
+        },
+        {
             "Key": "Activity_Create",
             "Value": "New activity"
         },
@@ -252,6 +264,22 @@
         {
             "Key": "DaySchedule_Activities",
             "Value": "Activities"
+        },
+        {
+            "Key": "WeekSchedule_Create",
+            "Value": "New week schedule"
+        },
+        {
+            "Key": "WeekSchedule_Edit",
+            "Value": "Edit week schedule"
+        },
+        {
+            "Key": "WeekSchedule_WeekNumber",
+            "Value": "Week number"
+        },
+        {
+            "Key": "WeekSchedule_Days",
+            "Value": "Days"
         },
         {
             "Key": "TimePeriod_StartTime",
@@ -304,6 +332,18 @@
         {
             "Key": "EntityField_Activities",
             "Value": "Activities"
+        },
+        {
+            "Key": "EntityField_WeekNumber",
+            "Value": "Week number"
+        },
+        {
+            "Key": "EntityField_Days",
+            "Value": "Days"
+        },
+        {
+            "Key": "EntityField_TimePeriod",
+            "Value": "Time period"
         }
     ]
 }

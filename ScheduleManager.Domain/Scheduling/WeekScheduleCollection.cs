@@ -7,7 +7,7 @@ namespace ScheduleManager.Domain.Scheduling
     {
         protected override int GetKeyForItem(WeekSchedule item)
         {
-            return item.WeekNumber;
+            return item.WeekNumber.GetValueOrDefault();
         }
     }
 }

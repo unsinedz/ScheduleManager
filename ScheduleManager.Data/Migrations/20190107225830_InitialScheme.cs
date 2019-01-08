@@ -104,7 +104,7 @@ namespace ScheduleManager.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    WeekNumber = table.Column<int>(nullable: false),
+                    WeekNumber = table.Column<int>(nullable: true),
                     ScheduleGroupId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -191,14 +191,21 @@ namespace ScheduleManager.Data.Migrations
                     RoomId = table.Column<Guid>(nullable: true),
                     SubjectId = table.Column<Guid>(nullable: true),
                     LecturerId = table.Column<Guid>(nullable: true),
-                    DayScheduleId = table.Column<Guid>(nullable: true)
+                    DayScheduleId = table.Column<Guid>(nullable: true),
+                    DayScheduleId1 = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Activities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Activities_DayScheduling_DayScheduleId",
+                        name: "FK_DaySchedule_Activity",
                         column: x => x.DayScheduleId,
+                        principalTable: "DayScheduling",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Activities_DayScheduling_DayScheduleId1",
+                        column: x => x.DayScheduleId1,
                         principalTable: "DayScheduling",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -338,6 +345,11 @@ namespace ScheduleManager.Data.Migrations
                 name: "IX_Activities_DayScheduleId",
                 table: "Activities",
                 column: "DayScheduleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Activities_DayScheduleId1",
+                table: "Activities",
+                column: "DayScheduleId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Activities_LecturerId",

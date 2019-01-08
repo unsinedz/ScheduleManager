@@ -25,7 +25,8 @@ else
             <tbody>
                 @foreach (var item in Model.PreviewableItems)
                 {
-                    var itemFields = item.GetItemFields().OrderBy(x => fieldsToDisplay.IndexOf(x.FieldName));
+                    var ownedFields = item.GetItemFields();
+                    var itemFields = fieldsToDisplay.Select(x => ownedFields.FirstOrDefault(z => string.Equals(z.FieldName, x)) ?? new ItemFieldInfo(x, string.Empty));
                     if (itemFields.Any())
                     {
                         <tr>

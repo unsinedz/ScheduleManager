@@ -110,7 +110,7 @@ Framework.Autocomplete = (function ($) {
             if (options.autocompleteData) {
                 options.autocompleteData = JSON.parse(options.autocompleteData);
                 if (!Array.isArray(options.autocompleteData))
-                options.autocompleteData = [options.autocompleteData];
+                    options.autocompleteData = [options.autocompleteData];
             }
 
             if (options.url && options.url.length) {
@@ -122,7 +122,7 @@ Framework.Autocomplete = (function ($) {
                             var isValueData = false;
                             var _data = this;
                             $.each(options.autocompleteData, function () {
-                                if (JSON.stringify(_data) === JSON.stringify(this)) {
+                                if (_data.id === undefined ? JSON.stringify(_data) === JSON.stringify(this) : _data.id === this.id) {
                                     isValueData = true;
                                     return false;
                                 }

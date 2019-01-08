@@ -6,7 +6,7 @@ namespace ScheduleManager.Domain.Scheduling
 {
     public class WeekSchedule : Entity
     {
-        public virtual int WeekNumber { get; set; }
+        public virtual int? WeekNumber { get; set; }
 
         public virtual DayScheduleCollection Days { get; set; }
     }

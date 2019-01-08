@@ -9,7 +9,7 @@ using ScheduleManager.Data;
 namespace ScheduleManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20181226072111_InitialScheme")]
+    [Migration("20190107225830_InitialScheme")]
     partial class InitialScheme
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -212,6 +212,8 @@ namespace ScheduleManager.Data.Migrations
 
                     b.Property<Guid?>("DayScheduleId");
 
+                    b.Property<Guid?>("DayScheduleId1");
+
                     b.Property<Guid?>("LecturerId");
 
                     b.Property<Guid?>("RoomId");
@@ -227,6 +229,8 @@ namespace ScheduleManager.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DayScheduleId");
+
+                    b.HasIndex("DayScheduleId1");
 
                     b.HasIndex("LecturerId");
 
@@ -276,7 +280,7 @@ namespace ScheduleManager.Data.Migrations
 
                     b.Property<Guid?>("ScheduleGroupId");
 
-                    b.Property<int>("WeekNumber");
+                    b.Property<int?>("WeekNumber");
 
                     b.HasKey("Id");
 
@@ -384,9 +388,15 @@ namespace ScheduleManager.Data.Migrations
 
             modelBuilder.Entity("ScheduleManager.Domain.Scheduling.Activity", b =>
                 {
+                    b.HasOne("ScheduleManager.Domain.Scheduling.DaySchedule", "DaySchedule")
+                        .WithMany()
+                        .HasForeignKey("DayScheduleId")
+                        .HasConstraintName("FK_DaySchedule_Activity")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("ScheduleManager.Domain.Scheduling.DaySchedule")
                         .WithMany("Activities")
-                        .HasForeignKey("DayScheduleId");
+                        .HasForeignKey("DayScheduleId1");
 
                     b.HasOne("ScheduleManager.Domain.Faculties.Lecturer", "Lecturer")
                         .WithMany()

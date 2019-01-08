@@ -44,6 +44,12 @@ namespace ScheduleManager.Api.Metadata
             public const string Attendee = "attendee";
 
             public const string Activity = "activity";
+
+            public const string DaySchedule = "dayschedule";
+            
+            public const string WeekSchedule = "weekschedule";
+
+            public const string ScheduleGroup = "schedulegroup";
         }
     }
 }

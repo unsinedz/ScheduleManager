@@ -19,7 +19,8 @@ namespace ScheduleManager.Api
             builder.AddControllerRoute("Subject", "subjects/{action}", "List");
             builder.AddControllerRoute("TimePeriod", "timeperiods/{action}", "List");
             builder.AddControllerRoute("Activity", "activities/{action}", "List");
-            builder.AddControllerRoute("DaySchedule", "dayscheduling/{action}", "List");
+            builder.AddControllerRoute("DaySchedule", "schedule/daily/{action}", "List");
+            builder.AddControllerRoute("WeekSchedule", "schedule/weekly/{action}", "List");
             ConfigureApiV1Routes(builder);
         }
 
@@ -35,8 +36,8 @@ namespace ScheduleManager.Api
             builder.AddApiRoutes("Subject", $"api/{apiVersion}/subjects", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("TimePeriod", $"api/{apiVersion}/timeperiods", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("Activity", $"api/{apiVersion}/activities", apiVersion, hasList: true, hasSingle: true);
-            builder.AddApiRoutes("DayScheduling", $"api/{apiVersion}/schedule/daily", apiVersion, hasList: true, hasSingle: true);
-            builder.AddApiRoutes("WeekScheduling", $"api/{apiVersion}/schedule/weekly", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("DaySchedule", $"api/{apiVersion}/schedule/daily", apiVersion, hasList: true, hasSingle: true);
+            builder.AddApiRoutes("WeekSchedule", $"api/{apiVersion}/schedule/weekly", apiVersion, hasList: true, hasSingle: true);
             builder.AddApiRoutes("ScheduleGroup", $"api/{apiVersion}/schedule", apiVersion, hasList: true, hasSingle: true);
         }
 

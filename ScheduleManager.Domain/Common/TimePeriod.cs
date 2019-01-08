@@ -8,5 +8,10 @@ namespace ScheduleManager.Domain.Common
         public virtual DateTime Start { get; set; }
 
         public virtual DateTime End { get; set; }
+
+        public override string ToString()
+        {
+            return $"{this.Start.ToString("t")} - {this.End.ToString("t")}";
+        }
     }
 }

@@ -4,12 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using ScheduleManager.Api.Metadata;
 using ScheduleManager.Api.Metadata.Attributes;
 using ScheduleManager.Domain.Common;
 using ScheduleManager.Domain.Entities;
 using ScheduleManager.Domain.Faculties;
 using ScheduleManager.Domain.Scheduling;
+using ScheduleManager.Localizations;
 
 namespace ScheduleManager.Api.Models.Scheduling
 {
@@ -21,6 +23,8 @@ namespace ScheduleManager.Api.Models.Scheduling
         private readonly IAsyncProvider<Subject> _subjectProvider;
         private readonly IAsyncProvider<Lecturer> _lecturerProvider;
         private readonly IAsyncProvider<Attendee> _attendeeProvider;
+        private readonly IAsyncProvider<DaySchedule> _dayScheduleProvider;
+        private readonly IStringLocalizer _stringLocalizer;
 
         [HiddenInput(DisplayValue = false)]
         public virtual Guid Id { get; set; }
@@ -58,23 +62,38 @@ namespace ScheduleManager.Api.Models.Scheduling
             SelectMultiple = true)]
         public virtual IList<Attendee> Attendees { get; set; }
 
+        [Display(Name = "Activity_DaySchedule")]
+        [RelatedApiEntitySelector("Api_DaySchedule_List", ApiVersion = Constants.ApiVersions.V1, EntityType = Constants.EntityType.DaySchedule,
+            SelectMultiple = false, Required = false)]
+        public virtual DaySchedule DaySchedule { get; set; }
+
         public override bool Editable => true;
 
         public override bool Removable => true;
 
         public ActivityViewModel(IAsyncProvider<TimePeriod> timePeriodProvider, IAsyncProvider<Room> roomProvider,
-            IAsyncProvider<Subject> subjectProvider, IAsyncProvider<Lecturer> lecturerProvider, IAsyncProvider<Attendee> attendeeProvider)
+            IAsyncProvider<Subject> subjectProvider, IAsyncProvider<Lecturer> lecturerProvider, IAsyncProvider<Attendee> attendeeProvider,
+            IAsyncProvider<DaySchedule> dayScheduleProvider, IStringLocalizer stringLocalizer)
         {
             this._timePeriodProvider = timePeriodProvider;
             this._roomProvider = roomProvider;
             this._subjectProvider = subjectProvider;
             this._lecturerProvider = lecturerProvider;
             this._attendeeProvider = attendeeProvider;
+            this._dayScheduleProvider = dayScheduleProvider;
+            this._stringLocalizer = stringLocalizer;
         }
 
         public virtual IEnumerable<ItemFieldInfo> GetItemFields()
         {
             yield return new ItemFieldInfo(nameof(Title), this.Title);
+            yield return new ItemFieldInfo(nameof(TimePeriod), this.TimePeriod.ToString());
+            if (this.DaySchedule != null)
+            {
+                yield return new ItemFieldInfo(nameof(DaySchedule.DayOfWeek), _stringLocalizer.LocalizeEnumValue(this.DaySchedule.DayOfWeek));
+                if (this.DaySchedule.DedicatedDate.HasValue)
+                    yield return new ItemFieldInfo(nameof(DaySchedule.DedicatedDate), DaySchedule.DedicatedDate.Value.ToString("d"));
+            }
         }
 
         public override void Initialize(Activity entity)
@@ -86,6 +105,7 @@ namespace ScheduleManager.Api.Models.Scheduling
             this.Subject = entity.Subject;
             this.Lecturer = entity.Lecturer;
             this.Attendees = new List<Attendee>(entity.Attendees ?? Enumerable.Empty<Attendee>());
+            this.DaySchedule = entity.DaySchedule;
         }
 
         public override async Task<bool> TryUpdateEntityProperties(Activity entity)
@@ -120,6 +140,13 @@ namespace ScheduleManager.Api.Models.Scheduling
                 entity.Lecturer = this.Lecturer?.Id == null
                     ? null
                     : await _lecturerProvider.GetByIdAsync(this.Lecturer.Id);
+            }
+
+            if (!object.Equals(entity.DaySchedule?.Id, this.DaySchedule?.Id) && (updated = true))
+            {
+                entity.DaySchedule = this.DaySchedule?.Id == null
+                    ? null
+                    : await _dayScheduleProvider.GetByIdAsync(this.DaySchedule.Id);
             }
 
             updated |= await TryUpdateEntityAttendees(entity);

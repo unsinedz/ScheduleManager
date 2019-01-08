@@ -258,6 +258,13 @@ namespace ScheduleManager.Data
                     .OnDelete(DeleteBehavior.SetNull)
                     .IsRequired(false)
                     .HasConstraintName("FK_Lecturer_Activity");
+
+                builder.HasOne(x => x.DaySchedule)
+                    .WithMany()
+                    .HasForeignKey("DayScheduleId")
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .IsRequired(false)
+                    .HasConstraintName("FK_DaySchedule_Activity");
             }
 
             public virtual void BuildSchedule(EntityTypeBuilder<ScheduleGroup> builder)
@@ -286,7 +293,7 @@ namespace ScheduleManager.Data
                 builder.ToTable("WeekScheduling");
                 builder.HasKey(x => x.Id);
                 builder.Property(x => x.WeekNumber)
-                    .IsRequired();
+                    .IsRequired(false);
             }
         }
 

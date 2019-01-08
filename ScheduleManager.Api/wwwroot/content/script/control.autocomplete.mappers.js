@@ -46,6 +46,15 @@ var Framework = Framework || {};
             return start.format(format) + ' - ' + end.format(format);
         }
 
+        function buildDayScheduleName(dayOfWeek, dedicatedDate) {
+            if (!dedicatedDate)
+                return dayOfWeek;
+
+            var format = 'DD.MM';
+            var date = moment.utc(dedicatedDate);
+            return dayOfWeek + ' - ' + date.format(format);
+        }
+
         Framework.Autocomplete.addTypeMapper('timeperiod', function (data) {
             var autocompleteData = {};
             if (Array.isArray(data)) {
@@ -62,6 +71,25 @@ var Framework = Framework || {};
             return {
                 title: buildTimePeriodName(timePeriod.start, timePeriod.end),
                 value: timePeriod.id
+            };
+        }, '.Id');
+
+        Framework.Autocomplete.addTypeMapper('dayschedule', function (data) {
+            var autocompleteData = {};
+            if (Array.isArray(data)) {
+                $.each(data, function () {
+                    if (this.dayofweekstring)
+                        autocompleteData[buildDayScheduleName(this.dayofweekstring, this.dedicateddate)] = this;
+                });
+            }
+            else if (data)
+                return { key: buildDayScheduleName(data.dayofweekstring, data.dedicateddate), data: data };
+
+            return autocompleteData;
+        }, function (daySchedule) {
+            return {
+                title: buildDayScheduleName(daySchedule.dayofweekstring, daySchedule.dedicateddate),
+                value: daySchedule.id
             };
         }, '.Id');
     }

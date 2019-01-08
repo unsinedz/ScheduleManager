@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ScheduleManager.Api.Metadata.Attributes;
@@ -22,7 +23,7 @@ namespace ScheduleManager.Api.Controllers.Api
             var items = await ItemProvider.ListAsync(new Specification<TItem>()
                 .WithPageSize(pageSize)
                 .WithPageIndex(page));
-            return Ok(items);
+            return Ok(items.Select(DecorateItem));
         }
 
         [HttpGet]
@@ -36,8 +37,10 @@ namespace ScheduleManager.Api.Controllers.Api
             if (item == null)
                 return NotFound();
 
-            return Ok(item);
+            return Ok(DecorateItem(item));
         }
+
+        protected virtual object DecorateItem(TItem item) => item;
 
         protected virtual bool IsValidId(Guid id)
         {

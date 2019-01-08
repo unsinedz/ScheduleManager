@@ -19,15 +19,17 @@ namespace ScheduleManager.Api.Metadata.Attributes.Validation
 
         public override void AddValidation(ClientModelValidationContext context)
         {
-            MergeAttribute(context.Attributes, "data-val", "true");
-            MergeAttribute(context.Attributes, "data-val-signedcompare", GetErrorMessage(context));
-            MergeAttribute(context.Attributes, "data-val-signedcompare-to", Attribute.OtherProperty);
-            MergeAttribute(context.Attributes, "data-val-signedcompare-sign", Attribute.ExpectedComparisonSign.ToString());
+            var attributes = context.Attributes;
+            MergeAttribute(attributes, "data-val", "true");
+            MergeAttribute(attributes, "data-val-signedcompare", GetErrorMessage(context));
+            MergeAttribute(attributes, "data-val-signedcompare-to", Attribute.OtherProperty);
+            MergeAttribute(attributes, "data-val-signedcompare-sign", Attribute.ExpectedComparisonSign.ToString());
         }
 
         public override string GetErrorMessage(ModelValidationContextBase context)
         {
-            return GetErrorMessage(context.ModelMetadata, context.ModelMetadata.GetDisplayName(), Attribute.OtherPropertyDisplayName ?? GetDisplayNameForProperty(context.ModelMetadata.ContainerType, Attribute.OtherProperty));
+            var metadata = context.ModelMetadata;
+            return GetErrorMessage(metadata, metadata.GetDisplayName(), Attribute.OtherPropertyDisplayName ?? GetDisplayNameForProperty(metadata.ContainerType, Attribute.OtherProperty));
         }
 
         private string GetDisplayNameForProperty(Type containerType, string propertyName)
