@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Schema;
 using ScheduleManager.Domain.Extensions;
@@ -15,6 +16,8 @@ namespace ScheduleManager.Localizations.Data
 {
     public class JsonStringProvider : ILocalizableResourceProvider<string, string>
     {
+        private readonly ILogger _logger;
+
         protected virtual string FileName { get; set; }
 
         protected virtual StringLocalizationDescriptor Descriptor { get; set; }
@@ -22,9 +25,10 @@ namespace ScheduleManager.Localizations.Data
         public IDictionary<string, string> Values =>
             Descriptor?.Localizations?.ToDictionary(x => x.Key, x => x.Value);
 
-        public JsonStringProvider(string fileName)
+        public JsonStringProvider(string fileName, ILogger logger)
         {
             FileName = fileName;
+            this._logger = logger;
         }
 
         public virtual void Dispose()
@@ -57,7 +61,10 @@ namespace ScheduleManager.Localizations.Data
 
                 return JsonConvert.DeserializeObject<StringLocalizationDescriptor>(source);
             }
-            catch (JsonException) { }
+            catch (JsonException e)
+            {
+                _logger.LogError($"[{nameof(JsonStringProvider)}.JsonException]: {e.ToString()}");
+            }
 
             return null;
         }
@@ -68,7 +75,10 @@ namespace ScheduleManager.Localizations.Data
             {
                 return File.ReadAllText(this.FileName);
             }
-            catch (IOException) { }
+            catch (IOException e)
+            { 
+                _logger.LogError($"[{nameof(JsonStringProvider)}.IOException]: {e.ToString()}");
+            }
 
             return null;
         }

@@ -14,7 +14,7 @@ namespace ScheduleManager.Localizations.Data
 
         public void Dispose()
         {
-            this.Localizations.Each(x => { x.Dispose(); });
+            this.Localizations?.Each(x => { x.Dispose(); });
             this.Localizations = null;
             CultureCode = null;
             GC.SuppressFinalize(this);

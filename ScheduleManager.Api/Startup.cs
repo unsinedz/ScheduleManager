@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ScheduleManager.Authentication;
 using ScheduleManager.Data;
 using ScheduleManager.Domain;
@@ -85,15 +86,19 @@ namespace ScheduleManager.Api
                 .AddProjectAuthentication(ConfigureAuthentication)
                 .AddProjectLocalization();
 
-            services.Configure<StringLocalizationOptions>(options =>
+            using (var provider = services.BuildServiceProvider())
             {
-                options.DefaultCulture = new CultureInfo("en-US");
-                options.Providers = new[]
+                var logger = provider.GetService<ILogger>();
+                services.Configure<StringLocalizationOptions>(options =>
                 {
-                    new JsonStringProvider(Environment.ContentRootFileProvider.GetFileInfo(@"Resources\Strings\Texts.json").PhysicalPath),
-                    new JsonStringProvider(Environment.ContentRootFileProvider.GetFileInfo(@"Resources\Strings\Texts.ru.json").PhysicalPath)
-                };
-            });
+                    options.DefaultCulture = new CultureInfo("en-US");
+                    options.Providers = new[]
+                    {
+                        new JsonStringProvider(Environment.ContentRootFileProvider.GetFileInfo(@"Resources\Strings\Texts.json").PhysicalPath, logger),
+                        new JsonStringProvider(Environment.ContentRootFileProvider.GetFileInfo(@"Resources\Strings\Texts.ru.json").PhysicalPath, logger)
+                    };
+                });
+            }
         }
 
         private void ConfigureAuthentication(AuthenticationModuleOptions options)
