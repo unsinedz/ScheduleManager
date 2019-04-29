@@ -79,26 +79,13 @@ namespace ScheduleManager.Api
 
         private void AddProjectModules(IServiceCollection services)
         {
+            services.Configure<LocalizationModuleOptions>(Configuration.GetSection("Localizations"));
             services.AddProjectApi()
                 .AddProjectDomain()
                 .AddProjectData(options =>
                     options.DatabaseConnectionString = DefaultConnectionString)
                 .AddProjectAuthentication(ConfigureAuthentication)
                 .AddProjectLocalization();
-
-            using (var provider = services.BuildServiceProvider())
-            {
-                var logger = provider.GetService<ILogger>();
-                services.Configure<StringLocalizationOptions>(options =>
-                {
-                    options.DefaultCulture = new CultureInfo("en-US");
-                    options.Providers = new[]
-                    {
-                        new JsonStringProvider(Environment.ContentRootFileProvider.GetFileInfo(@"Resources\Strings\Texts.json").PhysicalPath, logger),
-                        new JsonStringProvider(Environment.ContentRootFileProvider.GetFileInfo(@"Resources\Strings\Texts.ru.json").PhysicalPath, logger)
-                    };
-                });
-            }
         }
 
         private void ConfigureAuthentication(AuthenticationModuleOptions options)
