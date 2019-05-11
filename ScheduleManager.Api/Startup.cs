@@ -39,11 +39,12 @@ namespace ScheduleManager.Api
             TypeResolver.Current = new TypeResolver(app.ApplicationServices);
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-            else
-                app.UseHsts();
 
             if (Configuration.GetSection("Security")?.GetValue("HttpToHttpsRedirect", false) ?? false)
+            {
                 app.UseHttpsRedirection();
+                app.UseHsts();
+            }
 
             app.UseAuthentication()
                 .UseStaticFiles()
