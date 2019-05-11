@@ -38,6 +38,26 @@
             "Value": "Save"
         },
         {
+            "Key": "Tools",
+            "Value": "Tools"
+        },
+        {
+            "Key": "DataManagement",
+            "Value": "Data management"
+        },
+        {
+            "Key": "SelectFile",
+            "Value": "Select file"
+        },
+        {
+            "Key": "UploadTemplateData",
+            "Value": "Upload template data"
+        },
+        {
+            "Key": "SelectJson",
+            "Value": "Select JSON file"
+        },
+        {
             "Key": "TimePeriod",
             "Value": "Time period"
         },

@@ -47,3 +47,7 @@ h1, h2, h3, h4, h5 {
 .validation-summary-errors li {
     color: #F44336;
 }
+
+.card-content form {
+    margin: 8px 0;
+}

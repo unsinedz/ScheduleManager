@@ -21,6 +21,7 @@ namespace ScheduleManager.Api
             builder.AddControllerRoute("Activity", "activities/{action}", "List");
             builder.AddControllerRoute("DaySchedule", "schedule/daily/{action}", "List");
             builder.AddControllerRoute("WeekSchedule", "schedule/weekly/{action}", "List");
+            builder.AddControllerRoute("DataManagement", "datamanagement/{action}", "Index");
             ConfigureApiV1Routes(builder);
         }
 
